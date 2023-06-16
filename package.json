@@ -12,9 +12,12 @@
     "@fortawesome/free-solid-svg-icons": "^6.4.0",
     "@fortawesome/vue-fontawesome": "^3.0.3",
     "pinia": "^2.0.35",
+    "sass": "^1.63.4",
     "scss": "^0.2.4",
+    "sweetalert2": "^11.7.12",
     "vue": "^3.2.47",
-    "vue-router": "^4.1.6"
+    "vue-router": "^4.1.6",
+    "vue-sweetalert2": "^5.0.5"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.2.1",
