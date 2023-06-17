@@ -5,11 +5,15 @@ export default {
   data() {
     return {
       allAnimalResponse: null,
+      //TODO
+      // member_id: sessionStorage.getItem("member_id")
+      member_id: "A123456789",
     }
   },
   methods: {
+    // 獲得所有動物資訊
     getAllAnimalData() {
-      axios.get("http://localhost:8080/findAll")
+      return axios.get("http://localhost:8080/findAll")
           .then(res => {
             this.allAnimalResponse = res.data.animalList;
           })
@@ -17,16 +21,80 @@ export default {
             console.error(error);
           });
     },
-    getImagePath(animalId) {
-      return `../img/animal/${animalId}-1.png`;
+
+    // 收藏或解除收藏
+    toggleFavoriteStatus(event) {
+      const target = event.target;
+      if (target.classList.contains("like")) {
+        const clicks = parseInt(target.getAttribute("data-clicks"));
+        const animalId = +target.getAttribute("data-item");
+        const body = {
+          "member_id": this.member_id,
+          "animal_id": animalId
+        };
+        if (clicks === 0) {
+          target.classList.add("liked");
+          target.setAttribute("data-clicks", clicks + 1);
+          return axios.post("http://localhost:8080/add_favorite", body)
+              .then((res) => console.log(res.data.message))
+              .catch((error) => console.error(error));
+        }
+        else {
+          target.classList.remove("liked");
+          target.setAttribute("data-clicks", clicks - 1);
+          return axios.post("http://localhost:8080/delete_favorite", body)
+              .then((res) => console.log(res.data.message))
+              .catch((error) => console.error(error));
+        }
+      }
+    },
+
+    // 畫面載入時宣染已收藏動物♥
+    renderFavoriteAnimals() {
+      return axios.post("http://localhost:8080/get_member_info", {"member_id": this.member_id})
+          .then((res) => {
+            // .split(",") 依據逗號回傳陣列字串
+            const fav = res.data.member.fav.split(",");
+            // 獲得所有♥DOM
+            const likeElements = document.querySelectorAll(".like");
+            likeElements.forEach((element) => {
+              const animalId = element.getAttribute("data-item");
+              if (fav.includes(animalId)) {
+                element.classList.add("liked");
+                element.setAttribute("data-clicks", "1");
+              }
+            });
+          });
+    },
+
+    // 獲取分類的動物資訊
+    getAllAnimalDataSort(specie) {
+      return axios.post("http://localhost:8080/findBySpecies",{ "species":specie})
+          .then((res) => {
+            this.allAnimalResponse = res.data.animalList;
+          });
+    },
+
+    // 判斷點擊全部、貓、狗
+    judgeClickAnimalSort(event){
+      const target = event.target;
+      if (target.classList.contains('filesBtnAll')) {
+        this.getAllAnimalData();
+      }
+      if (target.classList.contains('filesBtnDog')) {
+        this.getAllAnimalDataSort(true);
+      }
+      if (target.classList.contains('filesBtnCat')) {
+        this.getAllAnimalDataSort(false);
+      }
     }
   },
   mounted() {
     this.getAllAnimalData();
   },
   watch: {
-    allAnimalResponse(newData) {
-      console.log(newData);
+    allAnimalResponse() {
+      this.renderFavoriteAnimals();
     }
   }
 }
@@ -37,7 +105,7 @@ export default {
   <div class="animalAllFiles">
     <div class="filesTitle">
       <h2 class="filesTitleH2">待認養犬貓照片檢索</h2>
-      <div class="filesTitleBtn">
+      <div class="filesTitleBtn" @click="judgeClickAnimalSort">
         <button type="button" class="filesBtnAll">全部</button>
         <button type="button" class="filesBtnDog">犬</button>
         <button type="button" class="filesBtnCat">貓</button>
@@ -50,14 +118,14 @@ export default {
       </div>
     </div>
 
-    <div class="filesBanner">
+    <div class="filesBanner" ref="myRef">
       <div class="filesPic" v-for="(animal, index) in allAnimalResponse" :key="index"
            :style="{ backgroundImage: `url('img/animal/${animal.animalId}-1.png')` }"
            :data-filesPic="animal.animalId">
         <div class="filesText">
           <ul>編號:</ul>
           <ul>{{ animal.animalId }}</ul>
-          <p class="like" data-clicks="0" :data-item="animal.animalId">♥</p>
+          <p class="like" data-clicks="0" :data-item="animal.animalId" @click="toggleFavoriteStatus">♥</p>
         </div>
       </div>
     </div>
