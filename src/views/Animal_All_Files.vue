@@ -1,15 +1,180 @@
 <script>
-import {defineComponent} from 'vue'
+import axios from 'axios';
 
-export default defineComponent({
-  name: "Animal_All_Files"
-})
+export default {
+  data() {
+    return {
+      allAnimalResponse: null,
+    }
+  },
+  methods: {
+    getAllAnimalData() {
+      axios.get("http://localhost:8080/findAll")
+          .then(res => {
+            this.allAnimalResponse = res.data.animalList;
+          })
+          .catch(error => {
+            console.error(error);
+          });
+    },
+    getImagePath(animalId) {
+      return `../img/animal/${animalId}-1.png`;
+    }
+  },
+  mounted() {
+    this.getAllAnimalData();
+  },
+  watch: {
+    allAnimalResponse(newData) {
+      console.log(newData);
+    }
+  }
+}
 </script>
 
-<template>
 
+<template>
+  <div class="animalAllFiles">
+    <div class="filesTitle">
+      <h2 class="filesTitleH2">待認養犬貓照片檢索</h2>
+      <div class="filesTitleBtn">
+        <button type="button" class="filesBtnAll">全部</button>
+        <button type="button" class="filesBtnDog">犬</button>
+        <button type="button" class="filesBtnCat">貓</button>
+      </div>
+      <!-- 頁數小按鈕 -->
+      <div class="filesTitleMinBtn">
+        <button type="button" class="MinPage">1</button>
+        <button type="button" class="MinPage">2</button>
+        <button type="button" class="MinPage">3</button>
+      </div>
+    </div>
+
+    <div class="filesBanner">
+      <div class="filesPic" v-for="(animal, index) in allAnimalResponse" :key="index"
+           :style="{ backgroundImage: `url('img/animal/${animal.animalId}-1.png')` }"
+           :data-filesPic="animal.animalId">
+        <div class="filesText">
+          <ul>編號:</ul>
+          <ul>{{ animal.animalId }}</ul>
+          <p class="like" data-clicks="0" :data-item="animal.animalId">♥</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 頁數小按鈕 -->
+    <div class="filesTitleMinBtn">
+      <button type="button" class="MinPage">1</button>
+      <button type="button" class="MinPage">2</button>
+      <button type="button" class="MinPage">3</button>
+    </div>
+  </div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
+.filesTitle {
+  max-width: 1920px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
+  .filesTitleH2 {
+    font-size: 24px;
+    font-weight: bolder;
+    margin-bottom: 20px;
+    text-shadow: 1px 1px 1px #8C5E58;
+  }
+
+  .filesTitleBtn {
+    display: flex;
+    justify-content: space-around;
+
+    button {
+      width: 100px;
+      height: 30px;
+      margin: 20px;
+      background-color: rgb(182, 180, 180);
+      font-size: 18px;
+      font-weight: bold;
+
+      &:hover {
+        background-color: #8C5E58;
+      }
+    }
+  }
+}
+
+.filesTitleMinBtn {
+  display: flex;
+  margin: 20px 0;
+  justify-content: center;
+
+  .MinPage {
+    width: 20px;
+    height: 20px;
+    background-color: rgb(0, 0, 0);
+    border-radius: 50%;
+
+    &:hover {
+      background-color: #8C5E58;
+    }
+  }
+}
+
+.filesBanner {
+  margin: 50px 100px;
+  display: flex;
+  max-width: 1920px;
+  flex-wrap: wrap;
+  cursor: pointer;
+
+  .filesText {
+
+    p {
+      font-size: 25px;
+      cursor: pointer;
+    }
+  }
+}
+
+.filesPic {
+  width: 400px;
+  height: 400px;
+  background-position: top;
+  background-repeat: no-repeat;
+  background-size: cover;
+  border: 1px solid gray;
+  margin: 20px auto;
+  scale: 1;
+
+  &:hover {
+    scale: 1.2;
+  }
+}
+
+.filesText {
+  width: 400px;
+  height: 50px;
+  background-color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 1px 1px 1px gray;
+
+  ul {
+    font-size: 24px;
+    font-weight: bold;
+  }
+}
+
+.like {
+  font-size: 25px;
+  -webkit-text-stroke: 1px black;
+  text-stroke: 1px white;
+  color: transparent;
+}
+
+.liked {
+  color: red;
+}
 </style>

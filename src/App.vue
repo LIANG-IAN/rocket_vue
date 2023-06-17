@@ -1,17 +1,11 @@
 <script>
-export default {
-  methods: {
-    showAlert() {
-      // Use sweetalert2
-      this.$swal('Hello Vue world!!!');
-    },
-  },
-};
+
 </script>
 
 <template>
-  <h1>111</h1>
-  <button @click="showAlert">Hello world</button>
+  <div class="container">
+    <RouterView/>
+  </div>
 </template>
 
 <style scoped>
