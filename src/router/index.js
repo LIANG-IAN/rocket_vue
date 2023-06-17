@@ -7,6 +7,11 @@ const router = createRouter({
       path: "/",
       name: "animalAllFiles",
       component:  () => import("../views/Animal_All_Files.vue")
+    },
+    {
+      path: "/animalAdoption",
+      name: "animalAdoption",
+      component:  () => import("../views/Animal_Adoption.vue")
     }
   ]
 })

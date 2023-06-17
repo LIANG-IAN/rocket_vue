@@ -16,9 +16,6 @@ export default {
       return axios.get("http://localhost:8080/findAll")
           .then(res => {
             this.allAnimalResponse = res.data.animalList;
-          })
-          .catch(error => {
-            console.error(error);
           });
     },
 
@@ -37,14 +34,12 @@ export default {
           target.setAttribute("data-clicks", clicks + 1);
           return axios.post("http://localhost:8080/add_favorite", body)
               .then((res) => console.log(res.data.message))
-              .catch((error) => console.error(error));
         }
         else {
           target.classList.remove("liked");
           target.setAttribute("data-clicks", clicks - 1);
           return axios.post("http://localhost:8080/delete_favorite", body)
               .then((res) => console.log(res.data.message))
-              .catch((error) => console.error(error));
         }
       }
     },
