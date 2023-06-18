@@ -12,7 +12,7 @@ export default defineComponent({
 <template>
   <div class="container">
     <HeaderView />
-    <!-- <RouterView /> -->
+    <RouterView />
     <FooterView />
     <HomeBoxView />
   </div>

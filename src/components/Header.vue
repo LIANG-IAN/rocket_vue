@@ -59,12 +59,12 @@
                 </li>
             </ul>
             <div class="btn">
-                <a href="#">
+                <RouterLink to="/loginSignup/signup" class="router-link">
                     <button type="button">註冊</button>
-                </a>
-                <a href="#">
+                </RouterLink>
+                <RouterLink to="/loginSignup/login" class="router-link">
                     <button type="button">登入</button>
-                </a>
+                </RouterLink>
             </div>
         </div>
     </header>
