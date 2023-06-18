@@ -1,19 +1,29 @@
 <script>
+import HeaderView from './components/Header.vue';
+// import RouterView from './components/Router.vue';
+import FooterView from './components/Footer.vue';
+import HomeBoxView from './components/HomeBox.vue';
 export default {
-  methods: {
-    showAlert() {
-      // Use sweetalert2
-      this.$swal('Hello Vue world!!!');
-    },
+  components: {
+    HeaderView,
+    // RouterView,
+    FooterView,
+    HomeBoxView,
   },
-};
+}
 </script>
 
 <template>
-  <h1>111</h1>
-  <button @click="showAlert">Hello world</button>
+  <!-- 首頁 -->
+  <HeaderView />
+  <!-- <RouterView /> -->
+  <FooterView />
+  <HomeBoxView />
+
 </template>
 
 <style scoped>
-
+body{
+height: 1000px;
+}
 </style>
