@@ -6,18 +6,30 @@ const router = createRouter({
     {
       path: "/",
       name: "animalAllFiles",
-      component:  () => import("../views/AnimalAllFiles.vue")
+      component: () => import("../views/AnimalAllFiles.vue")
     },
     {
       path: "/animalAdoption",
       name: "animalAdoption",
-      component:  () => import("../views/AnimalAdoption.vue")
+      component: () => import("../views/AnimalAdoption.vue")
     },
     {
       path: "/animalModifyAndDelete",
       name: "animalModifyAndDelete",
-      component:  () => import("../views/AnimalModifyAndDelete.vue")
-    }
+      component: () => import("../views/AnimalModifyAndDelete.vue")
+    },
+    {
+      // 商城前台
+      path: "/shop",
+      name: "shop",
+      component: () => import("../views/Shop_All.vue")
+    },
+    {
+      // 商品頁後台
+      path: "/product",
+      name: "product",
+      component: () => import("../views/Product_All.vue")
+    },
   ]
 })
 
