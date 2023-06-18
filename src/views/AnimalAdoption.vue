@@ -10,41 +10,10 @@ export default {
       // memberId: sessionStorage.getItem("member_id")
       memberId: "A123467888",
       isSubmitted: true,
+      // TODO
+      // filesPic = +sessionStorage.getItem("filesPic");
+      filesPic: 1,
     };
-  },
-  mounted() {
-    //TODO
-    // const filesPic = +sessionStorage.getItem("filesPic");
-    const filesPic = 1;
-
-    // 獲取動物資料
-    axios.post("http://localhost:8080/findByAnimalId", {"animalId": filesPic})
-        .then((res) => {
-          const animal = res.data.animal;
-          this.animalInfo = {
-            animalId: animal.animalId,
-            animalName: animal.animalName,
-            sex: animal.sex,
-            species: +animal.species,
-            type: animal.type,
-            regDate: animal.regDate,
-            regCity: animal.regCity
-          };
-        })
-
-    // 計算照片數量，以決定v-for次數
-    axios.post("http://localhost:8080/countImg", {"sort": "a", "id": filesPic})
-        .then((res) => {
-          const numberOfPhotos = res.data.count;
-          const photoUrls = [];
-
-          for (let i = 1; i <= numberOfPhotos; i++) {
-            const url = `img/animal/${filesPic}-${i}.png`;
-            photoUrls.push({id: i, url: url});
-          }
-
-          this.photos = photoUrls;
-        })
   },
   methods: {
     // 領養申請
@@ -58,20 +27,86 @@ export default {
           .then((response) => {
             alert(response.data.message);
           })
+    },
+
+    // 獲取動物資料
+    getAnimalInfo(filesPic) {
+      return axios.post("http://localhost:8080/findByAnimalId", {"animalId": filesPic})
+          .then((res) => {
+            const animal = res.data.animal;
+            this.animalInfo = {
+              animalId: animal.animalId,
+              animalName: animal.animalName,
+              sex: animal.sex,
+              species: +animal.species,
+              type: animal.type,
+              regDate: animal.regDate,
+              regCity: animal.regCity
+            };
+          })
+    },
+
+    // 計算照片數量，以決定v-for次數並渲染照片
+    countImg() {
+      return axios.post("http://localhost:8080/countImg", {"sort": "a", "id": this.filesPic})
+          .then((res) => {
+            const numberOfPhotos = res.data.count;
+            const photoUrls = [];
+
+            for (let i = 1; i <= numberOfPhotos; i++) {
+              const url = `img/animal/${this.filesPic}-${i}.png`;
+              photoUrls.push({id: i, url: url});
+            }
+
+            this.photos = photoUrls;
+          })
+    },
+
+    // 圖片輪播
+    moveImage(element) {
+      if (element.target.tagName === 'IMG') {
+        if (!element.target.parentNode.classList.contains('firstPic')) {
+          const imgBlock = document.querySelector('.imgBlock');
+          const firstPicElement = imgBlock.querySelector('.firstPic');
+          const modifyMinPic = imgBlock.querySelector('.modifyMinPic');
+
+          firstPicElement.classList.remove("firstPic");
+          firstPicElement.classList.add("otherPic");
+          modifyMinPic.appendChild(firstPicElement);
+
+          const otherPicElement = element.target.parentNode;
+          otherPicElement.remove("otherPic");
+          otherPicElement.classList.add("firstPic");
+          imgBlock.insertBefore(otherPicElement, imgBlock.firstChild);
+        }
+      }
     }
-  }
+  },
+  mounted() {
+    this.getAnimalInfo(this.filesPic);
+    this.countImg();
+
+  },
+
 };
 </script>
 
 <template>
   <div class="animal_adoption">
-    <div class="imgBlock">
+    <div class="imgBlock" @click="moveImage">
+      <div class="firstPic" v-if="photos.length > 0">
+        <img :src="photos[0].url" alt="pet">
+      </div>
       <div class="modifyMinPic">
-        <div v-for="photo in photos" :key="photo.id" class="firstPic">
-          <img :src="photo.url" alt="pet"/>
-        </div>
+        <template v-for="(photo, index) in photos" :key="photo">
+          <div class="otherPic" v-if="index > 0">
+            <img :src="photo.url" alt="">
+          </div>
+        </template>
       </div>
     </div>
+
+
     <div class="modifyText">
       <ul class="modifyTextUl">
         <li>
@@ -153,5 +188,10 @@ export default {
   border: none;
   background-color: #818181;
   cursor: not-allowed;
+}
+
+img{
+  width: 100px;
+  height: 100px;
 }
 </style>

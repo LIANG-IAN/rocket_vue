@@ -6,12 +6,17 @@ const router = createRouter({
     {
       path: "/",
       name: "animalAllFiles",
-      component:  () => import("../views/Animal_All_Files.vue")
+      component:  () => import("../views/AnimalAllFiles.vue")
     },
     {
       path: "/animalAdoption",
       name: "animalAdoption",
-      component:  () => import("../views/Animal_Adoption.vue")
+      component:  () => import("../views/AnimalAdoption.vue")
+    },
+    {
+      path: "/animalModifyAndDelete",
+      name: "animalModifyAndDelete",
+      component:  () => import("../views/AnimalModifyAndDelete.vue")
     }
   ]
 })
