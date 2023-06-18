@@ -1,12 +1,14 @@
+//共用樣式
 html {
   scroll-behavior: smooth;
 }
 
 body {
-  background-color: #fff2ce;
-  max-width: 1920px;
+  background-color: #f2e9c6;
+  // max-width: 1920px; 寫在main
+
 
   button {
-    cursor: pointer;
+      cursor: pointer;
   }
 }

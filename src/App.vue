@@ -1,22 +1,25 @@
 <script>
-
-import {defineComponent} from "vue";
-import Header from "@/components/Header.vue";
-import Footer from "@/components/Footer.vue";
+import { defineComponent } from "vue";
+import HeaderView from './components/Header.vue';
+import FooterView from './components/Footer.vue';
+import HomeBoxView from './components/HomeBox.vue';
 
 export default defineComponent({
-  components: {Footer, Header}
+  components: { FooterView, HeaderView, HomeBoxView }
 })
 </script>
 
 <template>
   <div class="container">
-    <Header></Header>
-    <RouterView/>
-    <Footer></Footer>
+    <HeaderView />
+    <!-- <RouterView /> -->
+    <FooterView />
+    <HomeBoxView />
   </div>
 </template>
 
 <style scoped>
-
+body {
+  height: 1000px;
+}
 </style>
