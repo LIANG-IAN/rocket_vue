@@ -21,7 +21,7 @@ import { RouterLink } from "vue-router";
               <li><a href="https://livestock.kcg.gov.tw/ActivitiesListC003200.aspx" target="_blank">最新消息</a>
               </li>
               <li>
-                <!-- <a href="#" target="_blank">線上商城</a> -->
+                <!-- 已加路由 -->
                 <RouterLink to="/shop" class="link">線上商城</RouterLink>
               </li>
               <li><a href="#Jump1">教育課程</a>
@@ -85,9 +85,9 @@ header {
 
 
   img {
-    margin: 0 20px;
+    margin: 10px 20px;
     width: 100px;
-    height: 150px;
+    height: 100px;
   }
 
   .title {
