@@ -1,8 +1,12 @@
 <script>
 import { defineComponent } from "vue";
+import { RouterView } from "vue-router";
 import HeaderView from './components/Header.vue';
 import FooterView from './components/Footer.vue';
 import HomeBoxView from './components/HomeBox.vue';
+
+
+
 
 export default defineComponent({
   components: { FooterView, HeaderView, HomeBoxView }
@@ -12,14 +16,14 @@ export default defineComponent({
 <template>
   <div class="container">
     <HeaderView />
-    <!-- <RouterView /> -->
+    <RouterView />
     <FooterView />
     <HomeBoxView />
   </div>
 </template>
 
 <style scoped>
-body {
+/* body {
   height: 1000px;
-}
+} */
 </style>
