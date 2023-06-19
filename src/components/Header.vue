@@ -168,7 +168,7 @@ header {
     align-items: center;
     border: none;
     border-radius: 2rem;
-    box-shadow: 2px 2px 2px gray;
+    box-shadow: 2px 2px 5px grey;
     margin: 0 5px;
     background-color: #edd76a;
     color: #995a25;

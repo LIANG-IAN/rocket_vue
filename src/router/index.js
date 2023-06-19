@@ -39,6 +39,12 @@ const router = createRouter({
       name: "animalAdoptionReview",
       component: () => import("../views/AnimalAdoptionReview.vue")
     },
+    {
+      // 新增動物
+      path: "/animalAdd",
+      name: "animalAdd",
+      component: () => import("../views/AnimalAdd.vue")
+    },
   ]
 })
 

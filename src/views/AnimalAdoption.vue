@@ -75,7 +75,7 @@ export default {
           modifyMinPic.appendChild(firstPicElement);
 
           const otherPicElement = element.target.parentNode;
-          otherPicElement.remove("otherPic");
+          otherPicElement.classList.remove("otherPic");
           otherPicElement.classList.add("firstPic");
           imgBlock.insertBefore(otherPicElement, imgBlock.firstChild);
         }
