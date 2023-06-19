@@ -87,7 +87,7 @@ export default {
 
     // 回上一頁
     goBack() {
-      window.history.go(-1);
+      this.$router.go(-1);
     },
 
     // 更新動物資料

@@ -71,8 +71,8 @@ export default {
     },
 
     // 判斷點擊全部、貓、狗
-    judgeClickAnimalSort(event){
-      const target = event.target;
+    judgeClickAnimalSort(element){
+      const target = element.target;
       if (target.classList.contains('filesBtnAll')) {
         this.getAllAnimalData();
       }
@@ -82,7 +82,24 @@ export default {
       if (target.classList.contains('filesBtnCat')) {
         this.getAllAnimalDataSort(false);
       }
-    }
+    },
+
+    // 判斷點擊者身分，決定跳轉頁面
+    determineIdentityDecideJumpPage(element){
+      let filesPic = element.target.getAttribute("data-filesPic");
+      sessionStorage.setItem("filesPic", filesPic);
+      if (element.target.classList.contains("filesPic")) {
+        if (!element.target.classList.contains("like")) {
+          if (sessionStorage.getItem("administrator")===true) {
+            this.$router.push("/AnimalModifyAndDelete");
+          }
+          else {
+            this.$router.push("/AnimalAdoption");
+          }
+        }
+      }
+    },
+
   },
   mounted() {
     this.getAllAnimalData();
@@ -113,7 +130,7 @@ export default {
       </div>
     </div>
 
-    <div class="filesBanner" ref="myRef">
+    <div class="filesBanner" @click="determineIdentityDecideJumpPage">
       <div class="filesPic" v-for="(animal, index) in allAnimalResponse" :key="index"
            :style="{ backgroundImage: `url('img/animal/${animal.animalId}-1.png')` }"
            :data-filesPic="animal.animalId">
