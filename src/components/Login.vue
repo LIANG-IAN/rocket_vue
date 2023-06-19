@@ -76,8 +76,11 @@ export default {
                 if (data.message === "資料不正確") {
                     this.$swal(data.message, "輸入錯誤", "error");
                 }
-                if (data.message === "尚未註冊會員或資料錯誤") {
-                    this.$swal(data.message, "資訊錯誤", "error");
+                if (data.message === "尚未註冊會員或資料錯誤或尚未生效會員") {
+                    this.$swal(data.message, "資訊錯誤", "error")
+                    .then(() => {
+                        location.reload();
+                    });
                 }
             })
         },
@@ -193,6 +196,7 @@ export default {
         .submit-btn {
             width: 150px;
             margin: 24px 164px 6px;
+            padding: 5px;
             border: none;
             border-radius: 4rem;
             background-color: #995a25;

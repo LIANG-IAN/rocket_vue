@@ -2,64 +2,34 @@
 export default {
     data() {
         return {
-            pwdInside: null,
-            memberNameInside: null,
-            phoneInside: null,
-            birthdayInside: null,
+            pwdInside: "",
+            memberNameInside: "",
+            phoneInside: "",
+            birthdayInside: "",
+
+            // inputPwd: "",
+            // inputMemberName: "",
+            // inputPhone: "",
+            // inputBirthday: "",
+
+            phonePattern: "^09\\d{8}$",
+            pwdPattern: "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d\\S]{8,12}$",
+
+            today: new Date(),
+            maxDate: new Date().toISOString().split('T')[0],
+            date: "",
+
+            memberInfoBody: null
         }
     },
     methods: {
-
-    },
-    mounted() {
-    // fetch 後端API
-    const body = {
-        member_id: sessionStorage.getItem("member_id"),
-    }
-
-    fetch("http://localhost:8080/get_member_info", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        "body": JSON.stringify(body),
-        credentials: 'include', 
-    })
-    .then(response => response.json())
-    .then(data => {
-        // let dataPwd = data.member.pwd;
-        this.pwdInside = data.member.pwd;
-        // let dataMemberName = data.member.memberName;
-        this.memberNameInside = data.member.memberName;
-        // let dataPhone = data.member.phone;
-        this.phoneInside = data.member.phone;
-        // let dataBirth = data.member.birth;
-        this.birthdayInside= data.member.birth;
-        
-        // 預設內文
-        // 密碼改成*符號
-        let starPwd = "";
-        function turnToStar(pwd) {
-            pwd.split("").forEach(() => {
-                starPwd += "*";
-            })
-        }
-        turnToStar(dataPwd);
-        pwdInsideDOM.innerText = starPwd;
-
-        memberNameInsideDOM.innerText = dataMemberName;
-        phoneInsideDOM.innerText = dataPhone;
-        birthdayInsideDOM.innerText = dataBirth;
-
-
         // 修改密碼
-        let inputPwdDOM = null;
-        pwdDOM.addEventListener("click", function showPwd() {
+        showPwd() {
             this.$swal({
                 title: "修改密碼",
                 html: 
                 `
-                <input type="text" id="inputPwd" class="swal2-input" style="display: flex justify-content: center">
+                <input type="text" v-model="inputPwd" class="swal2-input" style="display: flex justify-content: center">
                 `,
                 confirmButtonText: "確定",
                 confirmButtonColor: "#ff7e6b",
@@ -69,32 +39,28 @@ export default {
                     autocomplete: 'off'
                 },
                 preConfirm: () => {
-                    inputPwdDOM = document.querySelector("#inputPwd");
-        
-                    const pwdPattern = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d\\S]{8,12}$";
-
-                    if(inputPwdDOM.value === null || inputPwdDOM.value === "") {
+                    if(this.inputPwd === null || this.inputPwd === "") {
                         return this.$swal("*密碼欄位未填寫")
                         .then(() => {
-                            showPwd(); 
+                            this.showPwd(); 
                         });
                     }
-                    else if (inputPwdDOM.value === dataPwd) {
+                    else if (this.inputPwd === this.pwdInside) {
                         return this.$swal("*密碼不可與原本相同")
                         .then(() => {
-                            showPwd(); 
+                            this.showPwd(); 
                         })
                     }
-                    else if (!inputPwdDOM.value.match(pwdPattern)) {
+                    else if (!this.inputPwd.match(this.pwdPattern)) {
                         return this.$swal("*密碼格式錯誤")
                         .then(() => {
-                            showPwd(); 
+                            this.showPwd(); 
                         })
                     }
                     else {
                         return this.$swal({
                             title: "請再次確認變更是否正確",
-                            text: `新密碼:    ${inputPwdDOM.value}`,
+                            text: `新密碼: ${this.inputPwd}`,
                             confirmButtonText: "確定",
                             confirmButtonColor: "#ff7e6b",
                             showCancelButton: true,
@@ -104,7 +70,7 @@ export default {
                                 // fetch 後端api
                                 const body = {
                                     member_id: sessionStorage.getItem("member_id"),
-                                    password: inputPwdDOM.value,
+                                    password: this.inputPwd,
                                 }
                                 
                                 return fetch("http://localhost:8080/update_pwd", {
@@ -123,11 +89,12 @@ export default {
                                             title: "成功更新密碼",
                                             text: "請重新登入",
                                             icon: "success"
-                                        }).then((result) => {
+                                        }).then(() => {
                                             // 更新密碼後(會強制登出)需要重新登入
                                             sessionStorage.removeItem("member_id");
-                                            location.href="/pages/member/login.html";
-                                            // pwdInsideDOM.innerText = inputPwdDOM.value;
+                                            sessionStorage.removeItem("administrator");
+                                            this.$router.push("/loginSignup/login")
+
                                             // 密碼改成*符號
                                             let starPwd = "";
                                             function turnToStar(pwd) {
@@ -135,9 +102,9 @@ export default {
                                                     starPwd += "*";
                                                 })
                                             }
-                                            turnToStar(inputPwdDOM.value);
-                                            pwdInsideDOM.innerText = starPwd;
-                                        })
+                                            turnToStar(this.inputPwd);
+                                            this.pwdInside = starPwd;
+                                        });
                                     }
                                 })
                             }
@@ -145,17 +112,14 @@ export default {
                     }
                 },
             })
-        })
-
-
+        },
         // 修改姓名
-        let inputMemberNameDOM = null;
-        memberNameDOM.addEventListener("click", function showMemberName() {
+        showMemberName() {
             this.$swal({
                 title: "修改姓名",
                 html: 
                 `
-                <input type="text" value="${dataMemberName}" id="inputMemberName" class="swal2-input" style="display: flex justify-content: center">
+                <input type="text" value="${this.memberNameInside}" v-model="inputMemberName" class="swal2-input" style="display: flex justify-content: center">
                 `,
                 confirmButtonText: "確定",
                 confirmButtonColor: "#ff7e6b",
@@ -165,24 +129,22 @@ export default {
                     autocomplete: 'off'
                 },
                 preConfirm: () => {
-                    inputMemberNameDOM = document.querySelector("#inputMemberName");
-
-                    if(inputMemberNameDOM.value === null || inputMemberNameDOM.value === "") {
+                    if(this.inputMemberName === null || this.inputMemberName === "") {
                         return this.$swal("*姓名欄位未填寫")
                         .then(() => {
-                            showMemberName(); 
+                            this.showMemberName(); 
                         });
                     }
-                    else if (inputMemberNameDOM.value === dataMemberName) {
+                    else if (this.inputMemberName === this.memberNameInside) {
                         return this.$swal("*姓名不可與原本相同")
                         .then(() => {
-                            showMemberName(); 
+                            this.showMemberName(); 
                         })
                     }
                     else {
                         return this.$swal({
                             title: "請再次確認變更是否正確",
-                            text: `新姓名:    ${inputMemberNameDOM.value}`,
+                            text: `新姓名: ${this.inputMemberName}`,
                             confirmButtonText: "確定",
                             confirmButtonColor: "#ff7e6b",
                             showCancelButton: true,
@@ -192,7 +154,7 @@ export default {
                                 // fetch 後端api
                                 const body = {
                                     member_id: sessionStorage.getItem("member_id"),
-                                    member_name: inputMemberNameDOM.value,
+                                    member_name: this.inputMemberName,
                                 }
                                 
                                 return fetch("http://localhost:8080/update_member_name", {
@@ -211,7 +173,7 @@ export default {
                                             title: "成功更新姓名",
                                             icon: "success"
                                         });
-                                        memberNameInsideDOM.innerText = inputMemberNameDOM.value;
+                                        this.memberNameInside = this.inputMemberName;
                                     }
                                 })
                             }
@@ -219,17 +181,14 @@ export default {
                     }
                 },
             })
-        })
-
-        
+        },
         // 修改手機
-        let inputPhoneDOM = null;
-        phoneDOM.addEventListener("click", function showPhone() {
+        showPhone() {
             this.$swal({
                 title: "修改手機",
                 html: 
                 `
-                <input type="text" value="${dataPhone}" id="inputPhone" class="swal2-input" style="display: flex justify-content: center">
+                <input type="text" value="${this.phoneInside}" v-model="inputPhone" class="swal2-input" style="display: flex justify-content: center">
                 `,
                 confirmButtonText: "確定",
                 confirmButtonColor: "#ff7e6b",
@@ -239,32 +198,29 @@ export default {
                     autocomplete: 'off'
                 },
                 preConfirm: () => {
-                    inputPhoneDOM = document.querySelector("#inputPhone");
-        
-                    const phonePattern = "^09\\d{8}$";
 
-                    if(inputPhoneDOM.value === null || inputPhoneDOM.value === "") {
+                    if(this.inputPhone === null || this.inputPhone === "") {
                         return this.$swal("*手機欄位未填寫")
                         .then(() => {
-                            showPhone(); 
+                            this.showPhone(); 
                         });
                     }
-                    else if (inputPhoneDOM.value === dataPhone) {
+                    else if (this.inputPhone === this.phoneInside) {
                         return this.$swal("*手機不可與原本相同")
                         .then(() => {
-                            showPhone(); 
+                            this.showPhone(); 
                         })
                     }
-                    else if (!inputPhoneDOM.value.match(phonePattern)) {
+                    else if (!this.inputPhone.match(phonePattern)) {
                         return this.$swal("*手機格式錯誤")
                         .then(() => {
-                            showPhone(); 
+                            this.showPhone(); 
                         })
                     }
                     else {
                         return this.$swal({
                             title: "請再次確認變更是否正確",
-                            text: `新手機:    ${inputPhoneDOM.value}`,
+                            text: `新手機:    ${this.inputPhone}`,
                             confirmButtonText: "確定",
                             confirmButtonColor: "#ff7e6b",
                             showCancelButton: true,
@@ -274,7 +230,7 @@ export default {
                                 // fetch 後端api
                                 const body = {
                                     member_id: sessionStorage.getItem("member_id"),
-                                    phone: inputPhoneDOM.value,
+                                    phone: this.inputPhone,
                                 }
                                 
                                 return fetch("http://localhost:8080/update_phone", {
@@ -293,7 +249,7 @@ export default {
                                             title: "成功更新手機",
                                             icon: "success"
                                         });
-                                        phoneInsideDOM.innerText = inputPhoneDOM.value;
+                                        this.phoneInside = this.inputPhone;
                                     }
                                 })
                             }
@@ -301,21 +257,14 @@ export default {
                     }
                 },
             })
-        })
-
-
-        // 日期: 設定最大日期為 today
-        const today = new Date();
-        const maxDate = today.toISOString().split('T')[0];
-
+        },
         // 修改生日
-        let inputBirthdayDOM = null;
-        birthdayDOM.addEventListener("click", function showBirthday() {
+        showBirthday() {
             this.$swal({
                 title: "修改生日",
                 html: 
                 `
-                <input type="date" value="${dataBirth}" id="inputBirthday" min="1900-01-01" max="${maxDate}" placeholder="yyyy/mm/dd" pattern="^\\d{4}-\\d{2}-\\d{2}$" class="swal2-input" style="display: flex justify-content: center" >
+                <input type="date" value="${this.birthdayInside}" v-model="inputBirthday" min="1900-01-01" :max="${this.maxDate}" placeholder="yyyy/mm/dd" pattern="^\\d{4}-\\d{2}-\\d{2}$" class="swal2-input" style="display: flex justify-content: center" >
                 `,
                 confirmButtonText: "確定",
                 confirmButtonColor: "#ff7e6b",
@@ -325,34 +274,32 @@ export default {
                     autocomplete: 'off'
                 },
                 preConfirm: () => {
-                    inputBirthdayDOM = document.querySelector("#inputBirthday");
-
                     // 解析日期字串為日期物件
-                    const date = new Date(inputBirthdayDOM.value);
+                    this.date = new Date(this.inputBirthday);
 
-                    if (date.getFullYear() < 1900 
-                    || date.getFullYear() > today.getFullYear()) {
+                    if (this.date.getFullYear() < 1900 
+                    || this.date.getFullYear() > this.today.getFullYear()) {
                         return this.$swal("*生日無效")
                         .then(() => {
-                            showBirthday(); 
+                            this.showBirthday(); 
                         })
                     }
-                    else if(inputBirthdayDOM.value === null || inputBirthdayDOM.value === "") {
+                    else if(this.inputBirthday === null || this.inputBirthday === "") {
                         return this.$swal("*生日欄位未填寫")
                         .then(() => {
-                            showBirthday(); 
+                            this.showBirthday(); 
                         });
                     }
-                    else if (inputBirthdayDOM.value === dataBirth) {
+                    else if (this.inputBirthday === this.birthdayInside) {
                         return this.$swal("*生日不可與原本相同")
                         .then(() => {
-                            showBirthday(); 
+                            this.showBirthday(); 
                         })
                     }
                     else {
                         return this.$swal({
                             title: "請再次確認變更是否正確",
-                            text: `新生日: ${inputBirthdayDOM.value}`,
+                            text: `新生日: ${this.inputBirthday}`,
                             confirmButtonText: "確定",
                             confirmButtonColor: "#ff7e6b",
                             showCancelButton: true,
@@ -362,7 +309,7 @@ export default {
                                 // fetch 後端api
                                 const body = {
                                     member_id: sessionStorage.getItem("member_id"),
-                                    birthday: inputBirthdayDOM.value,
+                                    birthday: this.inputBirthday,
                                 }
                                 
                                 return fetch("http://localhost:8080/update_birthday", {
@@ -381,7 +328,7 @@ export default {
                                             title: "成功更新生日",
                                             icon: "success"
                                         });
-                                        birthdayInsideDOM.innerText = inputBirthdayDOM.value;
+                                        this.birthdayInside = this.inputBirthday;
                                     }
                                 })
                             }
@@ -389,8 +336,39 @@ export default {
                     }
                 },
             })
-        })
+        }
+    },
+    mounted() {
+    // fetch 後端API
+    this.memberInfoBody = {
+        member_id: sessionStorage.getItem("member_id"),
+    }
+
+    fetch("http://localhost:8080/get_member_info", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        "body": JSON.stringify(this.memberInfoBody),
+        credentials: 'include', 
+    })
+    .then(response => response.json())
+    .then(data => {
+        this.pwdInside = data.member.pwd;
+        this.memberNameInside = data.member.memberName;
+        this.phoneInside = data.member.phone;
+        this.birthdayInside= data.member.birth;
         
+        // 預設內文
+        // 密碼改成*符號
+        let starPwd = "";
+        function turnToStar(pwd) {
+            pwd.split("").forEach(() => {
+                starPwd += "*";
+            })
+        }
+        turnToStar(this.pwdInside);
+        this.pwdInside = starPwd;
     })
     }
 }
@@ -430,32 +408,32 @@ export default {
             <h2>會員資訊</h2>
             <div class="merber-info-box">
                 <div class="info-content-box">
-                    <div class="each-content-box" @onclick="">
+                    <div class="each-content-box" @click="showPwd">
                         <p class="title">密碼</p>
-                        <div id="upPwdBox" class="content-box">
+                        <div class="content-box">
                             <p>{{ pwdInside }}</p>
-                            <font-awesome-icon icon="fa-solid fa-pen" style="color: #995a25;" />
+                            <font-awesome-icon class="icon-pen" icon="fa-solid fa-pen" style="color: #995a25;" />
                         </div>
                     </div>
-                    <div class="each-content-box" @onclick="">
+                    <div class="each-content-box" @click="showMemberName">
                         <p class="title">姓名</p>
-                        <div id="upMemberNameBox" class="content-box">
+                        <div class="content-box">
                             <p>{{ memberNameInside }}</p>
-                            <font-awesome-icon icon="fa-solid fa-pen" style="color: #995a25;" />
+                            <font-awesome-icon class="icon-pen" icon="fa-solid fa-pen" style="color: #995a25;" />
                         </div>
                     </div>
-                    <div class="each-content-box" @onclick="">
+                    <div class="each-content-box" @click="showPhone">
                         <p class="title">手機</p>
-                        <div id="upPhoneBox" class="content-box">
+                        <div class="content-box">
                             <p>{{ phoneInside }}</p>
-                            <font-awesome-icon icon="fa-solid fa-pen" style="color: #995a25;" />
+                            <font-awesome-icon class="icon-pen" icon="fa-solid fa-pen" style="color: #995a25;" />
                         </div>
                     </div>
-                    <div class="each-content-box" @onclick="">
+                    <div class="each-content-box" @click="showBirthday">
                         <p class="title">生日</p>
-                        <div id="upBirthBox" class="content-box">
+                        <div class="content-box">
                             <p>{{ birthdayInside }}</p>
-                            <font-awesome-icon icon="fa-solid fa-pen" style="color: #995a25;" />
+                            <font-awesome-icon class="icon-pen" icon="fa-solid fa-pen" style="color: #995a25;" />
                         </div>
                     </div>               
                 </div> 
@@ -480,7 +458,7 @@ export default {
             padding: 15px 0;
 
             .member-info-item {
-                background-color: #ffe9e8;
+                background-color: #edd76a;
             }
             
             .nav-item {
@@ -492,11 +470,10 @@ export default {
                 a {
                     display: block;
                     padding: 15px;
+                    font-weight: normal;
                     
-                    i {
-                        margin-bottom: 10px;
-                    }
                     p {
+                        margin-top: 10px;
                         font-size: .9rem;
                         color: #665e54;
                     }
@@ -549,7 +526,7 @@ export default {
                             color: #665e54;
                         }
     
-                        i {
+                        .icon-pen {
                             position: absolute;
                             top: 16px;
                             right: 16px;

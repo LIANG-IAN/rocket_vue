@@ -70,7 +70,7 @@ export default {
             this.phoneAlertText = "*手機格式錯誤";
         }
         else {
-            phoneAlertTextDOM.innerText = "";
+            this.phoneAlertText = "";
         }
         },
         // 生日欄位檢查
@@ -238,6 +238,7 @@ export default {
         .submit-btn {
             width: 150px;
             margin: 24px 164px 6px;
+            padding: 5px;
             border: none;
             border-radius: 4rem;
             background-color: #995a25;
@@ -250,7 +251,7 @@ export default {
             &:hover {
                 background-color: #edd76a;
                 color: #995a25;
-                box-shadow: 0px 15px 20px #f0ceb2;
+                box-shadow: 0px 15px 20px #f3eabd;
                 transform: translateY(-7px);
                 cursor: pointer;
             }
