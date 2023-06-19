@@ -5,6 +5,11 @@ const router = createRouter({
   routes: [
     {
       path: "/",
+      name: "homePage",
+      component:  () => import("../views/HomePage.vue")
+    },
+    {
+      path: "/animalAllFiles",
       name: "animalAllFiles",
       component:  () => import("../views/AnimalAllFiles.vue")
     },

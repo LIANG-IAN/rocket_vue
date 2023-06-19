@@ -1,4 +1,6 @@
 <script>
+import { RouterLink } from 'vue-router';
+
 
 </script>
 
@@ -13,7 +15,7 @@
                 </a>
             </div>
             <ul class="drop_down_menu">
-                <li class="hideLi"><a class="hideLi_a" href="../App.vue">首頁</a>
+                <li class="hideLi"><RouterLink to="/" class="hideLi_a">首頁</RouterLink>
                     <ul class="hideUl unMember">
                         <li><a href="#" target="_blank">動物認養</a>
                         </li>
@@ -47,13 +49,11 @@
                         </li>
                     </ul>
                 </li>
-                <li class="hideLi"><a class="hideLi_a" href="#">動物</a>
+                <li class="hideLi"><RouterLink to="/animalAllFiles" class="hideLi_a">動物</RouterLink>
                     <ul class="hideUl memberIn" id="animalDrop">
-                        <li><a href="#">審查</a>
+                        <li><RouterLink to="/animalAdoptionReview">審查</RouterLink>
                         </li>
-                        <li><a href="#">增加</a>
-                        </li>
-                        <li><a href="#">全部</a>
+                        <li><RouterLink to="/animalAdd">增加</RouterLink>
                         </li>
                     </ul>
                 </li>
