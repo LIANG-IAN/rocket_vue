@@ -67,63 +67,6 @@ import { RouterLink } from 'vue-router';
                 </a>
             </div>
         </div>
-        <ul class="drop_down_menu">
-          <li class="hideLi"><a class="hideLi_a" href="../App.vue">首頁</a>
-            <ul class="hideUl unMember">
-              <li><a href="#" target="_blank">動物認養</a>
-              </li>
-              <li><a href="https://livestock.kcg.gov.tw/ActivitiesListC003200.aspx" target="_blank">最新消息</a>
-              </li>
-              <li>
-                <!-- <a href="#" target="_blank">線上商城</a> -->
-                <RouterLink to="/shop" class="link">線上商城</RouterLink>
-              </li>
-              <li><a href="#Jump1">教育課程</a>
-              </li>
-            </ul>
-          </li>
-          <li class="hideLi"><a class="hideLi_a" href="#">關於</a>
-            <ul class="hideUl unMember">
-              <li><a href="#">園區資訊</a>
-              </li>
-              <li><a href="#">聯絡我們</a>
-              </li>
-              <li><a href="#">常見問答</a>
-              </li>
-            </ul>
-          </li>
-          <li class="hideLi"><a class="hideLi_a" href="#">服務</a>
-            <ul class="hideUl unMember">
-              <li><a href="#">動物防疫</a>
-              </li>
-              <li><a href="#">拾獲救援</a>
-              </li>
-              <li><a href="#">登記絕育</a>
-              </li>
-              <li><a href="#">失蹤協尋</a>
-              </li>
-            </ul>
-          </li>
-          <li class="hideLi"><a class="hideLi_a" href="#">動物</a>
-            <ul class="hideUl memberIn" id="animalDrop">
-              <li><a href="#">審查</a>
-              </li>
-              <li><a href="#">增加</a>
-              </li>
-              <li><a href="#">全部</a>
-              </li>
-            </ul>
-          </li>
-        </ul>
-        <div class="btn">
-          <a href="#">
-            <button type="button">註冊</button>
-          </a>
-          <a href="#">
-            <button type="button">登入</button>
-          </a>
-        </div>
-      </div>
     </header>
   </body>
 </template>
@@ -223,7 +166,7 @@ header {
     border: none;
     border-radius: 2rem;
     box-shadow: 2px 2px 5px grey;
-    margin: 0 5px;
+    margin: 0 15px 0 0;
     background-color: #edd76a;
     color: #995a25;
     scale: 0.8;
