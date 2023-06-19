@@ -15,9 +15,9 @@ export default {
     // 獲得所有動物資訊
     getAllAnimalData() {
       return axios.get("http://localhost:8080/findAll")
-          .then(res => {
-            this.allAnimalResponse = res.data.animalList;
-          });
+        .then(res => {
+          this.allAnimalResponse = res.data.animalList;
+        });
     },
 
     // 收藏或解除收藏
@@ -34,41 +34,41 @@ export default {
           target.classList.add("liked");
           target.setAttribute("data-clicks", clicks + 1);
           return axios.post("http://localhost:8080/add_favorite", body)
-              .then((res) => console.log(res.data.message))
+            .then((res) => console.log(res.data.message))
         }
         else {
           target.classList.remove("liked");
           target.setAttribute("data-clicks", clicks - 1);
           return axios.post("http://localhost:8080/delete_favorite", body)
-              .then((res) => console.log(res.data.message))
+            .then((res) => console.log(res.data.message))
         }
       }
     },
 
-    // 畫面載入時宣染已收藏動物♥
+    // 畫面載入時渲染已收藏動物♥
     renderFavoriteAnimals() {
-      return axios.post("http://localhost:8080/get_member_info", {"member_id": this.member_id})
-          .then((res) => {
-            // .split(",") 依據逗號回傳陣列字串
-            const fav = res.data.member.fav.split(",");
-            // 獲得所有♥DOM
-            const likeElements = document.querySelectorAll(".like");
-            likeElements.forEach((element) => {
-              const animalId = element.getAttribute("data-item");
-              if (fav.includes(animalId)) {
-                element.classList.add("liked");
-                element.setAttribute("data-clicks", "1");
-              }
-            });
+      return axios.post("http://localhost:8080/get_member_info", { "member_id": this.member_id })
+        .then((res) => {
+          // .split(",") 依據逗號回傳陣列字串
+          const fav = res.data.member.fav.split(",");
+          // 獲得所有♥DOM
+          const likeElements = document.querySelectorAll(".like");
+          likeElements.forEach((element) => {
+            const animalId = element.getAttribute("data-item");
+            if (fav.includes(animalId)) {
+              element.classList.add("liked");
+              element.setAttribute("data-clicks", "1");
+            }
           });
+        });
     },
 
     // 獲取分類的動物資訊
     getAllAnimalDataSort(specie) {
-      return axios.post("http://localhost:8080/findBySpecies",{ "species":specie})
-          .then((res) => {
-            this.allAnimalResponse = res.data.animalList;
-          });
+      return axios.post("http://localhost:8080/findBySpecies", { "species": specie })
+        .then((res) => {
+          this.allAnimalResponse = res.data.animalList;
+        });
     },
 
     // 判斷點擊全部、貓、狗

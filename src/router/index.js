@@ -4,7 +4,11 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      // 動物全覽
+      path: "/",
+      name: "homePage",
+      component:  () => import("../views/HomePage.vue")
+    },
+    {
       path: "/animalAllFiles",
       name: "animalAllFiles",
       component: () => import("../views/AnimalAllFiles.vue")

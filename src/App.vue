@@ -1,11 +1,11 @@
 <script>
-import { defineComponent } from "vue";
+import {defineComponent} from "vue";
 import HeaderView from './components/Header.vue';
 import FooterView from './components/Footer.vue';
 import HomeBoxView from './components/HomeBox.vue';
 
 export default defineComponent({
-  components: { FooterView, HeaderView, HomeBoxView }
+  components: {FooterView, HeaderView , HomeBoxView}
 })
 </script>
 
@@ -19,7 +19,5 @@ export default defineComponent({
 </template>
 
 <style scoped>
-body {
-  height: 1000px;
-}
+
 </style>
