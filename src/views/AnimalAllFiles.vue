@@ -8,6 +8,7 @@ export default {
       //TODO
       // member_id: sessionStorage.getItem("member_id")
       member_id: "A123456789",
+      page:1,
     }
   },
   methods: {
@@ -100,6 +101,11 @@ export default {
       }
     },
 
+    // 分頁功能
+    paging(element){
+      this.page = element.target.innerText;
+    }
+
   },
   mounted() {
     this.getAllAnimalData();
@@ -123,7 +129,7 @@ export default {
         <button type="button" class="filesBtnCat">貓</button>
       </div>
       <!-- 頁數小按鈕 -->
-      <div class="filesTitleMinBtn">
+      <div class="filesTitleMinBtn" @click="paging">
         <button type="button" class="MinPage">1</button>
         <button type="button" class="MinPage">2</button>
         <button type="button" class="MinPage">3</button>
@@ -131,7 +137,8 @@ export default {
     </div>
 
     <div class="filesBanner" @click="determineIdentityDecideJumpPage">
-      <div class="filesPic" v-for="(animal, index) in allAnimalResponse" :key="index"
+      <div class="filesPic"
+           v-for="(animal, index) in allAnimalResponse && allAnimalResponse.slice(page*9-9, page*9)" :key="index"
            :style="{ backgroundImage: `url('img/animal/${animal.animalId}-1.png')` }"
            :data-filesPic="animal.animalId">
         <div class="filesText">
