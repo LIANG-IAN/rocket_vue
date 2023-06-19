@@ -1,25 +1,31 @@
 <script>
+import Verifycode from "./Verifycode.vue"
 export default {
     components: {
+        Verifycode
     },
     data() {
         return {
             memberId: "",
             pwd: "",
+
             idAlertText: "",
             pwdAlertText: "",
+
+            idPattern: "^[A-Z][1-2]\\d{8}$",
+            pwdPattern: "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d\\S]{8,12}$",
+
             validText: "",
-            verifyAlert: ""
+            verifyPic: ""
         }
     },
     methods: {
         // 帳號欄位檢查
         checkMemberId() {
-            const idPattern = "^[A-Z][1-2]\\d{8}$";
             if (this.memberId === null || this.memberId === "") {
                 this.idAlertText = "*帳號欄位未填寫";
             }
-            else if (!this.memberId.match(idPattern)) {
+            else if (!this.memberId.match(this.idPattern)) {
                 this.idAlertText = "*帳號格式錯誤";
             }
             else {
@@ -28,11 +34,10 @@ export default {
         },
         // 密碼欄位檢查
         checkPwd() {
-            const pwdPattern = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d\\S]{8,12}$";
             if (this.pwd === null || this.pwd === "") {
                 this.pwdAlertText = "*密碼欄位未填寫";
             }
-            else if (!this.pwd.match(pwdPattern)) {
+            else if (!this.pwd.match(this.pwdPattern)) {
                 this.pwdAlertText = "*密碼格式錯誤";
             }
             else {
@@ -63,21 +68,32 @@ export default {
                     sessionStorage.setItem("administrator", data.member.administrator);
                     
                     this.$swal(data.message, "登入成功", "success")
-                    .then((result) => {
-                        if (result.isConfirmed) {
-                            window.history.go(-1);
-                        }
+                    .then(() => {
+                        // window.history.go(-1);
+                        this.$router.push("/")
                     });
                 }
                 if (data.message === "資料不正確") {
                     this.$swal(data.message, "輸入錯誤", "error");
                 }
-                if (data.message === "尚未註冊會員或資料錯誤或尚未生效會員") {
+                if (data.message === "尚未註冊會員或資料錯誤") {
                     this.$swal(data.message, "資訊錯誤", "error");
                 }
             })
         },
+        picFromChild(pic) {
+            this.verifyPic = pic;
+        },
+        inputFromChild(inputCode) {
+            this.validText = inputCode;
+        },
         loginBtn() {
+            this.picFromChild(this.verifyPic);
+            this.inputFromChild(this.validText);
+
+            // console.log(this.verifyPic)
+            // console.log(this.validText)
+
             // 若有欄位是空
             if (this.memberId.trim() === "" 
                 || this.pwd.trim() === ""
@@ -86,20 +102,23 @@ export default {
             }
 
             // 驗證碼錯誤
-            if (this.verifyAlert === "驗證碼錯誤") {
+            if (this.validText !== this.verifyPic) {
                 return this.$swal("驗證碼錯誤", "請重新輸入", "error")
                 .then(() => {
-                    location.href = "/pages/member/login.html";
+                    location.reload();
                 }) 
             }
 
-            this.fetchLogin();
+            // 前端檢查欄位沒問題
+            if(this.idAlertText === "" &&
+                this.pwdAlertText === "" ) {
+
+                this.fetchLogin();
+            }
         }
     },
     mounted() {
-
-        // 驗證碼欄位
-
+        
     }
 }
 </script>
@@ -122,16 +141,9 @@ export default {
                 <p class="alert-text">{{ pwdAlertText }}</p>
             </div>
 
-            <div class="input-block">
-                <div class="verify-pic">
-                    <canvas class="verify-canva" id="authCode"></canvas>
-                    <button type="button" class="verify-btn" id="reBtn">換圖</button>
-                </div>
-                <div class="verify-input">
-                    <input id="validText" type="text" placeholder="請輸入驗證碼" />
-                    <p id="verifyAlert"></p>
-                </div>
-            </div>
+            <Verifycode @picToParent="picFromChild" 
+            @verifyInputToParent="inputFromChild"
+            />
 
             <button @click="loginBtn" class="submit-btn" type="button">登入</button>              
         </form>  
@@ -178,64 +190,64 @@ export default {
                 font-size: .5rem;
             }
         }
-        .input-block {
-            width: 60%;
-            margin: 10px auto;
-            text-align: center;
-            .verify-pic {
-                display: flex;
-                padding-left: 10px;
-                margin: 10px 0;
-                .verify-canva {
-                    width: 200px;
-                    height: 50px;
-                    border-radius: 4px;
-                }
-                .verify-btn {
-                    width: 50px;
-                    height: fit-content;
-                    margin: 10px;
-                    padding: 5px;
-                    border-radius: 5px;
-                    background-color: #665e54;
-                    font-size: .6rem;
-                    transition: .3s;
+        // .input-block {
+        //     width: 60%;
+        //     margin: 10px auto;
+        //     text-align: center;
+        //     .verify-pic {
+        //         display: flex;
+        //         padding-left: 10px;
+        //         margin: 10px 0;
+        //         .verify-canva {
+        //             width: 200px;
+        //             height: 50px;
+        //             border-radius: 4px;
+        //         }
+        //         .verify-btn {
+        //             width: 50px;
+        //             height: fit-content;
+        //             margin: 10px;
+        //             padding: 5px;
+        //             border-radius: 5px;
+        //             background-color: #665e54;
+        //             font-size: .6rem;
+        //             transition: .3s;
 
-                    &:hover {
-                        background-color: #777;
-                    }
+        //             &:hover {
+        //                 background-color: #777;
+        //             }
 
-                    &:active {
-                        scale: .95;
-                    }
-                }
-            }
-            .verify-input {
-                display: flex;
-                padding-left: 10px;
+        //             &:active {
+        //                 scale: .95;
+        //             }
+        //         }
+        //     }
+        //     .verify-input {
+        //         display: flex;
+        //         padding-left: 10px;
 
-                input {
-                    width: 100px;
-                    padding-left: 10px;
-                    line-height: 2rem;
-                    border: 1px solid #777;
-                    border-radius: 4px;
-                    color: #665e54;
-                    font-weight: 700;
+        //         input {
+        //             width: 100px;
+        //             padding-left: 10px;
+        //             line-height: 2rem;
+        //             border: 1px solid #777;
+        //             border-radius: 4px;
+        //             color: #665e54;
+        //             font-weight: 700;
 
-                    &:focus {
-                        outline: none;
-                        border: 1px solid #edd76a;
-                    }
-                }
-                p {
-                    width: 80px;
-                    padding: 10px 0;
-                    font-size: .8rem;
-                }
-            }
+        //             &:focus {
+        //                 outline: none;
+        //                 border: 1px solid #edd76a;
+        //             }
+        //         }
+        //         p {
+        //             width: 80px;
+        //             padding: 10px 0;
+        //             font-size: .8rem;
+        //         }
+        //     }
 
-        }
+        // }
         .submit-btn {
             width: 150px;
             margin: 24px 164px 6px;
