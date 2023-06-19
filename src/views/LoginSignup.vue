@@ -1,5 +1,7 @@
 <script>
-import { RouterLink, RouterView } from "vue-router";
+// import { RouterLink, RouterView } from "vue-router";
+import store from "../stores/store.js"
+
 export default {
     components: {
     },
@@ -8,18 +10,18 @@ export default {
             currentRoute: this.$route.path
         }
     },
-    methods: {
-         
-    },
     mounted() {
-        // console.log(this.$route.path)
+        store().hideHeaderFooter()
+    },
+    beforeUnmount() {
+        store().showHeaderFooter()
     }
 }
 </script>
 
 <template>
 <div class="member-body">
-    <p>現在的路由: {{ this.$route.path }}</p>
+    <!-- <p>現在的路由: {{ this.$route.path }}</p> -->
     <div class="member-page">
         <div class="member-wrap">
             <div class="title-wrap">
@@ -41,7 +43,7 @@ export default {
     .member-page {
         .member-wrap {
             width: 480px;
-            margin: 0 auto;
+            margin: 40px auto 0;
             border-radius: .5rem;
             overflow: hidden;
             box-shadow: 1px 1px 3px #665e54;

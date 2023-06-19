@@ -21,6 +21,7 @@ import 'sweetalert2/dist/sweetalert2.min.css';
 library.add(fas);
 
 const app = createApp(App)
+const pinia = createPinia()
 
 app.component('font-awesome-icon', FontAwesomeIcon);
 
@@ -28,6 +29,7 @@ app.use(createPinia())
 
 app.config.globalProperties.$axios = axios
 
+app.use(pinia)
 app.use(router)
 app.use(VueSweetalert2);
 app.mount('#app')

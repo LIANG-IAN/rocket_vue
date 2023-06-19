@@ -4,9 +4,6 @@ export default {
         return {
             validText: "",
             verifyAlert: "",
-
-            // isValid: false,
-
             // 驗證碼建構
             options: {
                 canvasId: "authCode",/**canvas的id*/
@@ -132,13 +129,16 @@ export default {
             height: fit-content;
             margin: 10px;
             padding: 5px;
+            border: 1px solid #995a25;
             border-radius: 5px;
-            background-color: #665e54;
+            background-color: #edd76a;
+            color: #995a25;
             font-size: .6rem;
+            font-weight: bold;
             transition: .3s;
 
             &:hover {
-                background-color: #777;
+                background-color: #f2e9c6;
             }
 
             &:active {

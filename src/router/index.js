@@ -26,12 +26,18 @@ const router = createRouter({
         {
           // 子路由: /loginSignup/login
           path: "login",
-          component: () => import("../components/Login.vue")
+          component: () => import("../components/Login.vue"),
+          meta: {
+            hideHeaderFooter: true 
+          }
         },
         {
           // 子路由: /loginSignup/signup
           path: "signup",
-          component: () => import("../components/Signup.vue")
+          component: () => import("../components/Signup.vue"),
+          meta: {
+            hideHeaderFooter: true 
+          }
         }
       ]
     },
