@@ -37,7 +37,7 @@ export default {
             this.animalInfo = {
               animalId: animal.animalId,
               animalName: animal.animalName,
-              sex: animal.sex,
+              sex: +animal.sex,
               species: +animal.species,
               type: animal.type,
               regDate: animal.regDate,
