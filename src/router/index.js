@@ -49,6 +49,12 @@ const router = createRouter({
       name: "animalAdd",
       component: () => import("../views/AnimalAdd.vue")
     },
+    {
+      // 購物車
+      path: "/cart",
+      name: "cart",
+      component: () => import("../views/Cart.vue")
+    },
   ]
 })
 

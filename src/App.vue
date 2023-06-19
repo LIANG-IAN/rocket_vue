@@ -15,6 +15,7 @@ export default defineComponent({
     <RouterView />
     <FooterView />
     <HomeBoxView />
+
   </div>
 </template>
 
