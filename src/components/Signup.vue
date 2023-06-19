@@ -14,17 +14,26 @@ export default {
             pwdAlertText: "",
             nameAlertText: "",
             phoneAlertText: "",
-            birthAlertText: ""
+            birthAlertText: "",
+
+            idPattern: "^[A-Z][1-2]\\d{8}$",
+            pwdPattern: "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d\\S]{8,12}$",
+            phonePattern: "^09\\d{8}$",
+
+            today: new Date(),
+            maxDate: new Date().toISOString().split('T')[0],
+            date: "",
+
+            signupBody: null
         }
     },
     methods: {
         // 帳號欄位檢查
         checkMemberId() {
-            const idPattern = "^[A-Z][1-2]\\d{8}$";
             if (this.memberId === null || this.memberId === "") {
                 this.idAlertText = "*帳號欄位未填寫";
             }
-            else if (!this.memberId.match(idPattern)) {
+            else if (!this.memberId.match(this.idPattern)) {
                 this.idAlertText = "*帳號格式錯誤";
             }
             else {
@@ -33,11 +42,10 @@ export default {
         },
         // 密碼欄位檢查
         checkPwd() {
-            const pwdPattern = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d\\S]{8,12}$";
             if (this.pwd === null || this.pwd === "") {
                 this.pwdAlertText = "*密碼欄位未填寫";
             }
-            else if (!this.pwd.match(pwdPattern)) {
+            else if (!this.pwd.match(this.pwdPattern)) {
                 this.pwdAlertText = "*密碼格式錯誤";
             }
             else {
@@ -58,28 +66,20 @@ export default {
         if(this.phone === null || this.phone === "") {
             this.phoneAlertText = "*手機欄位未填寫";
         }
-        else if (!this.phone.match(phonePattern)) {
+        else if (!this.phone.match(this.phonePattern)) {
             this.phoneAlertText = "*手機格式錯誤";
         }
         else {
             phoneAlertTextDOM.innerText = "";
         }
         },
-        // 日期: 設定最大日期為 today
-        setMaxDate() {
-            const today = new Date();
-            const maxDate = today.toISOString().split('T')[0];
-            birthDOM.max = maxDate;
-        },
         // 生日欄位檢查
         checkBirthday() {
-            this.setMaxDate();
-
             // 解析日期字串為日期物件
-            const date = new Date(this.birth);
+            this.date = new Date(this.birth);
             
-            if (date.getFullYear() < 1900 
-            || date.getFullYear() > today.getFullYear()) {
+            if (this.date.getFullYear() < 1900 
+            || this.date.getFullYear() > this.today.getFullYear()) {
                 this.birthAlertText = "*生日無效";
             }
             else if(this.birth === null || this.birth === "") {
@@ -90,7 +90,7 @@ export default {
             }
         },
         fetchSignup() {
-            const body = {
+            this.signupBody = {
                 member_id: this.memberId,
                 password: this.pwd,
                 member_name: this.memberName,
@@ -102,8 +102,7 @@ export default {
                 headers: {
                     "Content-Type": "application/json"
                 },
-                "body": JSON.stringify(body),
-                // credentials: 'include', 
+                "body": JSON.stringify(this.signupBody),
             })
             .then(response => response.json())
             .then(data => {
@@ -111,23 +110,19 @@ export default {
 
                 // 跳出提醒視窗
                 if (data.message === "註冊成功") {
-                    this.$swal(data.message, "註冊成功", "success");
-
-                    const swalBtnDOM = document.querySelector(".swal-button");
-                    swalBtnDOM.addEventListener("click", () => {
-                        location.href="/login";
-                    })
+                    this.$swal(data.message, "註冊成功", "success")
+                    .then(() => {
+                        this.$router.push("/loginSignup/login")
+                    });
                 }
-                if (data.message === "資料不正確") {
+                else if (data.message === "已註冊會員") {
+                    this.$swal(data.message, "已註冊會員，請直接登入", "error")
+                    .then(() => {
+                        this.$router.push("/loginSignup/login")
+                    });
+                }
+                else if (data.message === "資料不正確") {
                     this.$swal(data.message, "輸入錯誤", "error");
-                }
-                if (data.message === "已註冊會員") {
-                    this.$swal(data.message, "已註冊會員，請直接登入", "error");
-
-                    const swalBtnDOM = document.querySelector(".swal-button");
-                    swalBtnDOM.addEventListener("click", () => {
-                        location.href="/pages/member/login.html";
-                    })
                 }
             })
         },
@@ -140,14 +135,19 @@ export default {
                 || this.birth.trim() === "") {
                 return this.$swal("注意!", "有欄位未填寫", "error");
             }
+            // 前端檢查欄位沒問題
+            if(this.idAlertText === "" &&
+                this.pwdAlertText === "" &&
+                this.nameAlertText === "" &&
+                this.phoneAlertText === "" &&
+                this.birthAlertText === "") {
 
-            this.fetchSignup();
+                this.fetchSignup();
+            }
         }
     },
     mounted() {
-
         
-
     }
 }
 </script>
@@ -186,11 +186,11 @@ export default {
             <div class="form-item">
                 <div class="input-box">
                     <label for="birth">生日</label>
-                    <input v-model="pbirthhone" @blur="checkBirth" autocomplete="off" type="date" min="1900-01-01" placeholder="yyyy/mm/dd" pattern="^\\d{4}-\\d{2}-\\d{2}$" required>
+                    <input v-model="birth" @blur="checkBirthday" autocomplete="off" type="date" min="1900-01-01" :max="maxDate" placeholder="yyyy/mm/dd" required>
                 </div>   
                 <p class="alert-text">{{ birthAlertText }}</p>
             </div>  
-            <button @click="signupBtn"  type="button" class="submit-btn" id="signupBtn">註冊</button>              
+            <button @click="signupBtn" type="button" class="submit-btn" id="signupBtn">註冊</button>              
         </form>
     </div>  
 </template>

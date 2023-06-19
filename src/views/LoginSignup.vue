@@ -5,11 +5,11 @@ export default {
     },
     data() {
         return {
-
+            currentRoute: this.$route.path
         }
     },
     methods: {
-        
+         
     },
     mounted() {
         // console.log(this.$route.path)
@@ -23,10 +23,10 @@ export default {
     <div class="member-page">
         <div class="member-wrap">
             <div class="title-wrap">
-                <div class="title-box login-box">
+                <div class="title-box" :class="{'login-box': currentRoute === '/loginSignup/login'}">
                     <p><RouterLink to="/loginSignup/login" class="router-link">登入</RouterLink></p>
                 </div>
-                <div class="title-box signup-box">
+                <div class="title-box" :class="{'signup-box': currentRoute === '/loginSignup/signup'}">
                     <p><RouterLink to="/loginSignup/signup" class="router-link">註冊</RouterLink></p>
                 </div>
             </div>
@@ -66,14 +66,15 @@ export default {
                         }
                     }
                 }
-                // .login-box {
-                // background-color: #fff;
-                //     p {
-                //         a {
-                //             color: #665e54;
-                //         }
-                //     }
-                // }
+                .login-box,
+                .signup-box {
+                background-color: #fff;
+                    p {
+                        a {
+                            color: #665e54;
+                        }
+                    }
+                }
             }            
         }
     }
