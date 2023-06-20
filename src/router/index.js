@@ -70,6 +70,12 @@ const router = createRouter({
       name: "cart",
       component: () => import("../views/Cart.vue")
     },
+    {
+      // 結帳頁面
+      path: "/checkout",
+      name: "checkout",
+      component: () => import("../views/Checkout.vue")
+    },
   ]
 })
 

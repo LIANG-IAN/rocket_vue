@@ -79,11 +79,14 @@ export default {
                     alt="">
                 <p class="product_Name">{{ product.productName }}</p>
                 <p class="product_price"> $ {{ product.price }}</p>
-                <!-- <button class="add_cart" type="button" :data-productid="product.productId">🛒</button> -->
+                <button class="add_cart" type="button" :data-productid="product.productId">🛒</button>
             </div>
             <RouterLink to="/shop_all" class="link">
                 <div class="product_card_last">查看全部商品</div>
             </RouterLink>
+            <RouterLink to="/checkout" class="link">
+            </RouterLink>
+            
 
         </div>
     </div>

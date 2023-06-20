@@ -129,9 +129,9 @@ export default {
                         alt="">
                     <p class="product_Name">{{ product.productName }}</p>
                     <p class="product_price">$ {{ product.price }}</p>
-                    <!-- <button class="add_cart" type="button" :data-productid="product.productId"><font-awesome-icon
-                            :icon="['fas', 'info']" size="xl" style="color: #995a25;" /></button> -->
-                </RouterLink>
+                    <button class="add_cart" type="button" :data-productid="product.productId"><font-awesome-icon
+                            :icon="['fas', 'info']" size="xl" style="color: #995a25;" /></button>
+                </RouterLink>  
             </div>
         </div>
 

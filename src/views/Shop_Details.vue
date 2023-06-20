@@ -39,6 +39,27 @@ export default {
                     // 報錯時要做的事情
                     console.error('錯誤:', error);
                 });
+        },
+        addToCart() {
+            const memberId = sessionStorage.getItem("member_id");
+            const products = {};
+
+            products[this.productId] = this.quantity;
+
+            const requestData = {
+                member: {
+                    memberId: memberId
+                },
+                products,
+            };
+            console.log(requestData)
+            axios.post("http://localhost:8080/addCart", requestData)
+                .then(function (response) {
+                    alert(response.data.message);
+                })
+                .catch(function (error) {
+                    console.log("An error occurred:", error);
+                });
         }
     }
 }
@@ -52,8 +73,8 @@ export default {
             <h3 id="product_category">商品分類：{{ category }}</h3>
             <p id="product_price">$ {{ price }}</p>
             <hr class="hrr">
-            數量：<input id="quantity" type="number">
-            <button id="add_cart" type="button">加入購物車 <font-awesome-icon :icon="['fas', 'cart-arrow-down']" size="lg"
+            數量：<input id="quantity" type="number" v-model="quantity">
+            <button id="add_cart" type="button" @click="addToCart">加入購物車 <font-awesome-icon :icon="['fas', 'cart-arrow-down']" size="lg"
                     style="color: #ffffff;" />
             </button>
             <p id="product_stock">目前庫存：{{ stock }}</p>

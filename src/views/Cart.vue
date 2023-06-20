@@ -4,42 +4,42 @@
 
 
 // 加入購物車
-const addCart = document.querySelector('#add_cart');
-const quantity1DOM = document.querySelector("#quantity1")
-addCart.addEventListener('click', function () {
-  const memberId = sessionStorage.getItem("member_id");
-  const products = {};
+// const addCart = document.querySelector('#add_cart');
+// const quantity1DOM = document.querySelector("#quantity1")
+// addCart.addEventListener('click', function () {
+//   const memberId = sessionStorage.getItem("member_id");
+//   const products = {};
 
-  products[productId] = quantity1DOM.value;
+//   products[productId] = quantity1DOM.value;
 
-  const requestData = {
-    member: {
-      memberId: memberId
-    },
-    products,
-  };
-  console.log(requestData)
-  fetch("http://localhost:8080/addCart", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(requestData)
-  })
-    .then(function (response) {
-      return response.json();
-    })
-    .then(function (data) {
-      alert(data.message);
-    })
-    .catch(function (error) {
-      console.log("An error occurred:", error);
-    });
-});
+//   const requestData = {
+//     member: {
+//       memberId: memberId
+//     },
+//     products,
+//   };
+//   console.log(requestData)
+//   fetch("http://localhost:8080/addCart", {
+//     method: "POST",
+//     headers: {
+//       "Content-Type": "application/json"
+//     },
+//     body: JSON.stringify(requestData)
+//   })
+//     .then(function (response) {
+//       return response.json();
+//     })
+//     .then(function (data) {
+//       alert(data.message);
+//     })
+//     .catch(function (error) {
+//       console.log("An error occurred:", error);
+//     });
+// });
 </script>
 
 <template>
-  <div id="app">
+  <!-- <div id="app">
     <div class="right-side w-4/5 bg-white flex justify-center items-center">
       <div id="show_detail_area" class="h-5/6 w-5/6 m-5 bg-pri-green flex">
         <img :src="productImg" class="w-1/2 m-5" alt="">
@@ -53,7 +53,7 @@ addCart.addEventListener('click', function () {
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
 </template>
 
 <style></style>
