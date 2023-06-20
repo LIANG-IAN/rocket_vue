@@ -70,6 +70,35 @@ const router = createRouter({
       name: "cart",
       component: () => import("../views/Cart.vue")
     },
+    {
+      // 登入註冊
+      path: "/loginSignup",
+      name: "loginSignup",
+      component: () => import("../views/LoginSignup.vue"),
+      children: [
+        {
+          // 子路由: /loginSignup/login
+          path: "login",
+          component: () => import("../components/Login.vue"),
+          meta: {
+            hideHeaderFooter: true 
+          }
+        },
+        {
+          // 子路由: /loginSignup/signup
+          path: "signup",
+          component: () => import("../components/Signup.vue"),
+          meta: {
+            hideHeaderFooter: true 
+          }
+        }]
+      },
+      {
+        // 會員資訊
+        path: "/memberInfo",
+        name: "memberInfo",
+        component:  () => import("../views/MemberInfo.vue")
+      },
   ]
 })
 
