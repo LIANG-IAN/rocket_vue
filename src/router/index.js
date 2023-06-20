@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from "vue-router"
+import { createRouter, createWebHistory } from "vue-router";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -29,13 +29,28 @@ const router = createRouter({
       // 商城前台
       path: "/shop",
       name: "shop",
-      component: () => import("../views/Shop_All.vue")
+      component: () => import("../views/Shop.vue"),
+    },
+    {
+      // 商城-全部商品
+      path: "/shop_all",
+      name: "shop_all",
+      component: () => import("../views/Shop_All.vue"),
+    },
+    {
+      // 商城-商品詳細頁
+      path: "/shop_details/:productId",
+      name: "shop_details",
+      component: () => import("../views/Shop_Details.vue"),
     },
     {
       // 商品頁後台
       path: "/product",
       name: "product",
-      component: () => import("../views/Product_All.vue")
+      component: () => import("../views/Product.vue"),
+      children: [
+
+      ]
     },
     {
       // 商品頁後台
