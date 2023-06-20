@@ -11,11 +11,13 @@ export default {
             dropdownOptions: [
                 { label: '狗🐶', value: '狗' },
                 { label: '貓🐱', value: '貓' },
+                { label: '全部', value: '' },
             ],
             dropdownOptions2: [
                 { label: '日用', value: '日用' },
                 { label: '食品', value: '食品' },
                 { label: '戶外', value: '戶外' },
+                { label: '全部', value: '' },
             ],
 
             // 商品顯示
@@ -23,15 +25,19 @@ export default {
             currentPage: 1,          // 目前所在的頁碼
             itemsPerPage: 9,         // 每頁顯示的商品數量
             totalPages: 0,           // 總頁數
-            displayedProducts: [],   // 顯示的商品列表
             currentSlide: 1,         // 當前的分頁索引
 
             //搜尋關鍵字
             strName: "",
-            strCate1: "",
-            strCate2: "",
+            strCate1: "全部",
+            strCate2: "全部",
             //搜尋結果
-            searchResults: [],
+            searchResults: [],       // 顯示的商品列表
+            count: 0,
+
+            //環境變數
+            findAllProductUrl: import.meta.env.VITE_FIND_ALL_PRODUCT,
+            searchProductUrl: import.meta.env.VITE_SEARCH_PRODUCT,
         }
 
     },
@@ -41,7 +47,7 @@ export default {
     methods: {
         //取得全部商品
         getProducts() {
-            axios.get('http://localhost:8080/find_all_product')
+            axios.get(this.findAllProductUrl)
                 .then(response => {
                     this.products = response.data.productList.reverse();
                     this.totalPages = Math.ceil(this.products.length / this.itemsPerPage);
@@ -56,7 +62,9 @@ export default {
         updateDisplayedProducts() {
             const startIndex = (this.currentSlide - 1) * this.itemsPerPage;
             const endIndex = startIndex + this.itemsPerPage;
-            this.displayedProducts = this.products.slice(startIndex, endIndex);
+            this.searchResults = this.products.slice(startIndex, endIndex);
+            // console.log(this.displayedProducts.length);
+            this.count = this.searchResults.length;
         },
         //輪播
         setCurrentSlide(slideIndex) {
@@ -81,13 +89,20 @@ export default {
 
             axios({
                 method: 'post',
-                url: 'http://localhost:8080/search_by_name_and_categories',
+                url: this.searchProductUrl,
                 data: requestData
             })
                 .then((res) => {
                     console.log(res.data.productList);
                     //恭喜我終於抓到資料了嗚嗚嗚
-                    this.searchResults = res.data.productList;
+                    try {
+                        this.searchResults = res.data.productList;
+                        console.log("查詢中...");
+                        this.count = this.searchResults.length;
+                    } catch {
+                        console.log("查詢有誤，或沒有結果!")
+                    }
+
                 })
                 .catch(error => {
                     console.error(error);
@@ -125,41 +140,34 @@ export default {
 
         <Checkout />
 
-        <div class="all_title" v-if="searchResults.length > 0">
-            <h1>搜尋結果</h1>
+        <div class="all_title">
+            <h1>商品列表</h1>
         </div>
-        <div class="all_title" v-else>
-            <h1>所有商品</h1>
-        </div>
-        <div class="products_list" v-if="searchResults.length > 0">
-
-            <div class="product_card" v-for="result in searchResults">
-                <RouterLink :to="'shop_details/' + result.productId">
-                    <img class=" product_img" :src="`../../public/img/productWall_img/pruductWall_${result.productId}.jpg`"
-                        alt="">
-                    <p class="product_Name">{{ result.productName }}</p>
-                    <p class="product_price">$ {{ result.price }}</p>
-                </RouterLink>
+        <div v-if="searchResults && searchResults.length > 0">
+            <div class="result_count">
+                <span>已顯示出 <span v-text="count"></span> 筆結果：</span>
+            </div>
+            <div class="products_list">
+                <div class="product_card" v-for="result in searchResults">
+                    <RouterLink :to="'shop_details/' + result.productId">
+                        <img class=" product_img" :src="`../../public/img/productWall_img/${result.productId}-1.jpg`"
+                            alt="">
+                        <p class="product_Name">{{ result.productName }}</p>
+                        <p class="product_price">$ {{ result.price }}</p>
+                    </RouterLink>
+                </div>
+            </div>
+            <div class="pages">
+                <button v-for="index in totalPages" :key="index" @click="setCurrentSlide(index)">
+                    {{ index }}
+                </button>
             </div>
         </div>
         <div class="products_list" v-else>
-            <div class="product_card" v-for="product in displayedProducts" :key="product.product_id">
-                <RouterLink :to="'shop_details/' + product.productId">
-                    <img class=" product_img" :src="`../../public/img/productWall_img/pruductWall_${product.productId}.jpg`"
-                        alt="">
-                    <p class="product_Name">{{ product.productName }}</p>
-                    <p class="product_price">$ {{ product.price }}</p>
-                    <!-- <button class="add_cart" type="button" :data-productid="product.productId"><font-awesome-icon
-                            :icon="['fas', 'info']" size="xl" style="color: #995a25;" /></button> -->
-                </RouterLink>
-            </div>
+            <span class="no_result">查無結果</span>
         </div>
 
-        <div class="pages">
-            <button v-for="index in totalPages" :key="index" @click="setCurrentSlide(index)">
-                {{ index }}
-            </button>
-        </div>
+
     </div>
 </template>
 
@@ -173,6 +181,21 @@ a {
     margin: 0 auto;
     background-color: #fff;
     padding-bottom: 100px;
+
+    .no_result {
+        width: 200%;
+        text-align: center;
+        margin: auto;
+        font-size: 20px;
+        color: red;
+    }
+
+    .result_count {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
 
     .all_title {
         display: flex;
@@ -196,7 +219,7 @@ a {
 
         .product_card {
             width: 250px;
-            height: 280px;
+            height: 310px;
             display: flex;
             flex-direction: column;
             justify-content: start;

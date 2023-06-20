@@ -211,7 +211,7 @@ export default {
             <font-awesome-icon :icon="['fas', 'square-caret-left']" size="lg" style="color: #935743;" />
             <span> 回商品總覽 </span>
         </button>
-        <img id="product_img" :src="`../../public/img/productWall_img/pruductWall_${productId}.jpg`" alt="">
+        <img id="product_img" :src="`../../public/img/productWall_img/${productId}-1.jpg`" alt="">
         <div id="details">
             <font-awesome-icon :icon="['fas', 'pen-to-square']" size="lg" style="color: #995a25;"
                 @click="changeProductName" />
