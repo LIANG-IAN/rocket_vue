@@ -11,15 +11,15 @@ export default {
             type: Array,
             default: () => []
         },
-        searchKeyword: null,
-        searchCate1: null,
-        searchCate2: null,
+        searchKeyword: "",
+        searchCate1: "",
+        searchCate2: "",
 
     }, data() {
         return {
-            searchInput: '', // 搜尋關鍵字
-            category1: null,
-            category2: null  // 初始化選擇的值
+            searchInput: "", // 搜尋關鍵字
+            category1: "",
+            category2: ""    // 初始化選擇的值
         }
     }, methods: {
         search() {

@@ -75,11 +75,13 @@ export default {
         </div>
         <div class="products_list" v-if="products.length > 0">
             <div class="product_card" v-for=" product in reverseProducts" :key="product.product_id">
-                <img class=" product_img" :src="`../../public/img/productWall_img/pruductWall_${product.productId}.jpg`"
-                    alt="">
-                <p class="product_Name">{{ product.productName }}</p>
-                <p class="product_price"> $ {{ product.price }}</p>
-                <!-- <button class="add_cart" type="button" :data-productid="product.productId">🛒</button> -->
+                <RouterLink :to="'shop_details/' + product.productId">
+                    <img class=" product_img" :src="`../../public/img/productWall_img/pruductWall_${product.productId}.jpg`"
+                        alt="">
+                    <p class="product_Name">{{ product.productName }}</p>
+                    <p class="product_price"> $ {{ product.price }}</p>
+                    <!-- <button class="add_cart" type="button" :data-productid="product.productId">🛒</button> -->
+                </RouterLink>
             </div>
             <RouterLink to="/shop_all" class="link">
                 <div class="product_card_last">查看全部商品</div>
@@ -91,6 +93,10 @@ export default {
 
 
 <style lang="scss" scoped>
+a {
+    color: black;
+}
+
 .shop_main {
     width: 80%;
     margin: 0 auto;
@@ -190,7 +196,7 @@ export default {
                 font-size: 14px;
                 position: absolute;
                 bottom: 10px;
-                left: 10px;
+                right: 10px;
                 margin: 10px;
 
             }
@@ -212,7 +218,7 @@ export default {
             justify-content: center;
             align-items: center;
             width: 250px;
-            height: 320px;
+            height: 280px;
             border: 2px solid #cfb7a3;
             background-color: #edd76a;
             border-radius: 20px;

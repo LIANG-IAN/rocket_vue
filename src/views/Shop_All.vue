@@ -6,6 +6,7 @@ import SearchBar from '../components/SearchBar.vue';
 export default {
     data() {
         return {
+
             // 下拉式選單
             dropdownOptions: [
                 { label: '狗🐶', value: '狗' },
@@ -16,6 +17,7 @@ export default {
                 { label: '食品', value: '食品' },
                 { label: '戶外', value: '戶外' },
             ],
+
             // 商品顯示
             products: [],
             currentPage: 1,          // 目前所在的頁碼
@@ -23,10 +25,13 @@ export default {
             totalPages: 0,           // 總頁數
             displayedProducts: [],   // 顯示的商品列表
             currentSlide: 1,         // 當前的輪播分頁索引
+
             //搜尋關鍵字
-            strName: null,
-            strCate1: null,
-            strCate2: null,
+            strName: "",
+            strCate1: "",
+            strCate2: "",
+            //搜尋結果
+            searchResults: []
         }
 
     },
@@ -53,10 +58,12 @@ export default {
             const endIndex = startIndex + this.itemsPerPage;
             this.displayedProducts = this.products.slice(startIndex, endIndex);
         },
+        //輪播
         setCurrentSlide(slideIndex) {
             this.currentSlide = slideIndex;
             this.updateDisplayedProducts();
         },
+        //搜尋欄
         searchPushResult(searchData) {
             // console.dir(searchData)
             this.strName = searchData.searchInput;
@@ -80,12 +87,12 @@ export default {
                 .then((res) => {
                     console.log(res.data.productList);
                     //恭喜我終於抓到資料了嗚嗚嗚
+                    this.searchResults = res.data.productList;
                 })
                 .catch(error => {
                     console.error(error);
                     console.log("錯誤!");
                 });
-
         }
     },
     mounted() {
@@ -118,11 +125,24 @@ export default {
 
         <Checkout />
 
-        <div class="all_title">
+        <div class="all_title" v-if="searchResults.length > 0">
+            <h1>搜尋結果</h1>
+        </div>
+        <div class="all_title" v-else>
             <h1>所有商品</h1>
         </div>
+        <div class="products_list" v-if="searchResults.length > 0">
 
-        <div class="products_list" v-if="products.length > 0">
+            <div class="product_card" v-for="result in searchResults">
+                <RouterLink :to="'shop_details/' + result.productId">
+                    <img class=" product_img" :src="`../../public/img/productWall_img/pruductWall_${result.productId}.jpg`"
+                        alt="">
+                    <p class="product_Name">{{ result.productName }}</p>
+                    <p class="product_price">$ {{ result.price }}</p>
+                </RouterLink>
+            </div>
+        </div>
+        <div class="products_list" v-else>
             <div class="product_card" v-for="product in displayedProducts" :key="product.product_id">
                 <RouterLink :to="'shop_details/' + product.productId">
                     <img class=" product_img" :src="`../../public/img/productWall_img/pruductWall_${product.productId}.jpg`"
