@@ -31,8 +31,7 @@ export default {
         "宜蘭縣"
       ],
       // TODO
-      // filesPic: +sessionStorage.getItem("filesPic"),
-      filesPic: 1,
+      filesPic: +sessionStorage.getItem("filesPic"),
       base64Body: []
     };
   },

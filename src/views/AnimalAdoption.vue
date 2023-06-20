@@ -7,12 +7,10 @@ export default {
       animalInfo: {},
       photos: [],
       // TODO
-      // memberId: sessionStorage.getItem("member_id")
-      memberId: "A123467888",
+      memberId: sessionStorage.getItem("member_id"),
       isSubmitted: true,
       // TODO
-      // filesPic = +sessionStorage.getItem("filesPic");
-      filesPic: 1,
+      filesPic : +sessionStorage.getItem("filesPic")
     };
   },
   methods: {

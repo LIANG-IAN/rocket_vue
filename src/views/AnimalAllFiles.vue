@@ -6,8 +6,7 @@ export default {
     return {
       allAnimalResponse: null,
       //TODO
-      // member_id: sessionStorage.getItem("member_id")
-      member_id: "A123456789",
+      member_id: sessionStorage.getItem("member_id"),
       page:1,
     }
   },
@@ -91,7 +90,7 @@ export default {
       sessionStorage.setItem("filesPic", filesPic);
       if (element.target.classList.contains("filesPic")) {
         if (!element.target.classList.contains("like")) {
-          if (sessionStorage.getItem("administrator")===true) {
+          if (sessionStorage.getItem("administrator")==="true") {
             this.$router.push("/AnimalModifyAndDelete");
           }
           else {
