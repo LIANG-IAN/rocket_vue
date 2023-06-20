@@ -6,7 +6,7 @@ const router = createRouter({
     {
       path: "/",
       name: "homePage",
-      component:  () => import("../views/HomePage.vue")
+      component: () => import("../views/HomePage.vue")
     },
     {
       path: "/animalAllFiles",
@@ -26,7 +26,19 @@ const router = createRouter({
       component: () => import("../views/AnimalModifyAndDelete.vue")
     },
     {
-      // 商城前台
+      // 動物-詳細
+      path: "/animalAdoptionReview",
+      name: "animalAdoptionReview",
+      component: () => import("../views/AnimalAdoptionReview.vue")
+    },
+    {
+      // 新增動物
+      path: "/animalAdd",
+      name: "animalAdd",
+      component: () => import("../views/AnimalAdd.vue")
+    },
+    {
+      // 商城前台=====================================================
       path: "/shop",
       name: "shop",
       component: () => import("../views/Shop.vue"),
@@ -48,24 +60,21 @@ const router = createRouter({
       path: "/product",
       name: "product",
       component: () => import("../views/Product.vue"),
-      children: [
-
-      ]
     },
     {
-      // 商品頁後台
-      path: "/animalAdoptionReview",
-      name: "animalAdoptionReview",
-      component: () => import("../views/AnimalAdoptionReview.vue")
+      // 商品頁後台-詳細
+      path: "/product_details/:productId",
+      name: "product_details",
+      component: () => import("../views/Product_Details.vue"),
     },
     {
-      // 新增動物
-      path: "/animalAdd",
-      name: "animalAdd",
-      component: () => import("../views/AnimalAdd.vue")
+      // 商品頁後台-新增
+      path: "/product_add/",
+      name: "product_add",
+      component: () => import("../views/Product_Add.vue"),
     },
     {
-      // 購物車
+      // 購物車 =====================================================
       path: "/cart",
       name: "cart",
       component: () => import("../views/Cart.vue")

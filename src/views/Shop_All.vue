@@ -24,14 +24,14 @@ export default {
             itemsPerPage: 9,         // 每頁顯示的商品數量
             totalPages: 0,           // 總頁數
             displayedProducts: [],   // 顯示的商品列表
-            currentSlide: 1,         // 當前的輪播分頁索引
+            currentSlide: 1,         // 當前的分頁索引
 
             //搜尋關鍵字
             strName: "",
             strCate1: "",
             strCate2: "",
             //搜尋結果
-            searchResults: []
+            searchResults: [],
         }
 
     },
@@ -195,15 +195,16 @@ a {
 
 
         .product_card {
+            width: 250px;
+            height: 280px;
             display: flex;
             flex-direction: column;
             justify-content: start;
             align-items: center;
-            width: 250px;
-            height: 280px;
+            margin: 16px;
             border: 2px solid #cfb7a3;
             border-radius: 20px;
-            margin: 16px;
+            box-shadow: 0px 5px 5px #f2e9c6;
             position: relative;
 
             .product_img {

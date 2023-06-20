@@ -1,3 +1,6 @@
+//環境變數用
+const apiUrl = import.meta.env.VITE_APP_API_URL;
+
 import './stylesheet/main.scss'
 
 import { createApp } from 'vue'
@@ -11,9 +14,6 @@ import { fas } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 import { fab } from '@fortawesome/free-brands-svg-icons';
 
-
-
-
 library.add(fab);
 library.add(fas);
 
@@ -25,6 +25,9 @@ import 'sweetalert2/dist/sweetalert2.min.css';
 
 const app = createApp(App)
 const pinia = createPinia()
+
+// 設定環境變數
+app.config.globalProperties.$apiUrl = apiUrl;
 
 app.component('font-awesome-icon', FontAwesomeIcon);
 

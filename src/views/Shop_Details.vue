@@ -70,11 +70,12 @@ export default {
     border: 2px solid #cfb7a3;
     border-radius: 20px;
     background-color: #fff;
+    box-shadow: 0px 5px 5px #f2e9c6;
 
     #product_img {
         margin: 20px;
-        height: 360px;
-        width: 360px;
+        height: 50%;
+        width: 50%;
         // border: 2px solid #cfb7a3;
         // border-radius: 20px;
     }
@@ -128,6 +129,14 @@ export default {
                 background-color: #b86c2e;
             }
         }
+    }
+}
+
+
+@media (max-width: 600px) {
+    #show_detail_area {
+        display: block;
+        /* 或者其他適當的 display 屬性值 */
     }
 }
 </style>
