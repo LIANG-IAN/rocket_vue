@@ -9,6 +9,8 @@ export default {
             memberId: "",
             pwd: "",
 
+            showPwd: false,
+
             idAlertText: "",
             pwdAlertText: "",
 
@@ -31,6 +33,10 @@ export default {
             else {
                 this.idAlertText = "";
             }
+        },
+        // 顯示隱藏密碼
+        togglePwd() {
+            this.showPwd = !this.showPwd;
         },
         // 密碼欄位檢查
         checkPwd() {
@@ -139,7 +145,9 @@ export default {
             <div class="form-item">
                 <div class="input-box">
                     <label for="pwd">密碼</label>
-                    <input v-model="pwd" @blur="checkPwd" autocomplete="off" type="password" placeholder="請輸入8~12碼英文字母和數字" pattern="^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d\\S]{8,12}$" required>
+                    <input v-model="pwd" @blur="checkPwd" autocomplete="off" :type="showPwd ? 'text' : 'password'" 
+                    placeholder="請輸入8~12碼英文字母和數字" pattern="^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d\\S]{8,12}$" required>
+                    <font-awesome-icon class="icon-eye" @click="togglePwd" :icon="[showPwd ? 'fas' : 'fas', showPwd ? 'eye-slash' : 'eye']" style="color: #edd76a;" />
                 </div>
                 <p class="alert-text">{{ pwdAlertText }}</p>
             </div>
@@ -162,6 +170,7 @@ export default {
                 display: flex;
                 width: 300px;
                 margin: 20px auto 15px;
+                position: relative;
 
                 label {
                     width: 3rem;
@@ -182,6 +191,13 @@ export default {
                         outline: none;
                         border: 1px solid #edd76a;
                     }
+                }
+
+                .icon-eye {
+                    cursor: pointer;
+                    position: absolute;
+                    top: 10px;
+                    right: 12px;
                 }
             }
 

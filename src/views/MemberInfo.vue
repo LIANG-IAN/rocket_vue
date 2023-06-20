@@ -2,15 +2,23 @@
 export default {
     data() {
         return {
+            dataPwd: "",
+
             pwdInside: "",
             memberNameInside: "",
             phoneInside: "",
             birthdayInside: "",
 
-            // inputPwd: "",
-            // inputMemberName: "",
-            // inputPhone: "",
-            // inputBirthday: "",
+            eye1: null,
+            eye2: null,
+            inputPwdDOM: null,
+            inputPwdDOM2: null,
+
+            inputPwd: "",
+            inputPwd2: "",
+            inputMemberName: "",
+            inputPhone: "",
+            inputBirthday: "",
 
             phonePattern: "^09\\d{8}$",
             pwdPattern: "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d\\S]{8,12}$",
@@ -29,24 +37,66 @@ export default {
                 title: "修改密碼",
                 html: 
                 `
-                <input type="text" v-model="inputPwd" class="swal2-input" style="display: flex justify-content: center">
+                <div style="position: relative">
+                    <label for="pwd">輸入新密碼</label>
+                    <input type="password" id="inputPwd" autocomplete="off"  class="swal2-input">
+                    <i id="eye1" class="fa-solid fa-eye" style="color: #edd76a; position: absolute; right: 60px; top: 37px; cursor: pointer;"></i>
+                </div>
+                <div style="position: relative">
+                    <label for="pwd">確認新密碼</label>
+                    <input type="password" id="inputPwd2" autocomplete="off"  class="swal2-input">
+                    <i id="eye2" class="fa-solid fa-eye" style="color: #edd76a; position: absolute; right: 60px; top: 37px; cursor: pointer;"></i>
+                </div>
                 `,
                 confirmButtonText: "確定",
                 confirmButtonColor: "#ff7e6b",
                 showCancelButton: true,
-                cancelButtonText: "取消", 
-                inputAttributes: {
-                    autocomplete: 'off'
+                cancelButtonText: "取消",
+                didOpen: () => {
+                    // 顯示隱藏密碼
+                    this.eye1 = document.querySelector("#eye1");
+                    this.inputPwdDOM = document.querySelector("#inputPwd");
+                    this.eye1.addEventListener("click", () => {
+                        if (this.eye1.classList.contains("fa-eye")) {
+                            this.eye1.classList.remove("fa-eye");
+                            this.eye1.classList.add("fa-eye-slash");
+                            this.inputPwdDOM.type = "text"
+                        }
+                        else {
+                            this.eye1.classList.remove("fa-eye-slash");
+                            this.eye1.classList.add("fa-eye");
+                            this.inputPwdDOM.type = "password"
+                        }
+                    })
+
+                    this.eye2 = document.querySelector("#eye2");
+                    this.inputPwd2DOM = document.querySelector("#inputPwd2");
+                    this.eye2.addEventListener("click", () => {
+                        if (this.eye2.classList.contains("fa-eye")) {
+                            this.eye2.classList.remove("fa-eye");
+                            this.eye2.classList.add("fa-eye-slash");
+                            this.inputPwd2DOM.type = "text"
+                        }
+                        else {
+                            this.eye2.classList.remove("fa-eye-slash");
+                            this.eye2.classList.add("fa-eye");
+                            this.inputPwd2DOM.type = "password"
+                        }
+                    })
+                    
                 },
                 preConfirm: () => {
-                    if(this.inputPwd === null || this.inputPwd === "") {
-                        return this.$swal("*密碼欄位未填寫")
+                    this.inputPwd = document.querySelector("#inputPwd").value;
+                    this.inputPwd2 = document.querySelector("#inputPwd2").value;
+                    if(this.inputPwd === null || this.inputPwd === "" || 
+                    this.inputPwd2 === null || this.inputPwd2 === "") {
+                        return this.$swal("*有欄位未填寫")
                         .then(() => {
                             this.showPwd(); 
                         });
                     }
-                    else if (this.inputPwd === this.pwdInside) {
-                        return this.$swal("*密碼不可與原本相同")
+                    else if (this.inputPwd === this.dataPwd) {
+                        return this.$swal("*新密碼不可與原本相同")
                         .then(() => {
                             this.showPwd(); 
                         })
@@ -57,10 +107,15 @@ export default {
                             this.showPwd(); 
                         })
                     }
+                    else if (this.inputPwd !== this.inputPwd2) {
+                        return this.$swal("*確認密碼輸入錯誤")
+                        .then(() => {
+                            this.showPwd(); 
+                        })
+                    }
                     else {
                         return this.$swal({
-                            title: "請再次確認變更是否正確",
-                            text: `新密碼: ${this.inputPwd}`,
+                            title: "請再次確認是否變更密碼",
                             confirmButtonText: "確定",
                             confirmButtonColor: "#ff7e6b",
                             showCancelButton: true,
@@ -119,16 +174,14 @@ export default {
                 title: "修改姓名",
                 html: 
                 `
-                <input type="text" value="${this.memberNameInside}" v-model="inputMemberName" class="swal2-input" style="display: flex justify-content: center">
+                <input type="text" value="${this.memberNameInside}" id="inputMemberName" autocomplete="off" class="swal2-input">
                 `,
                 confirmButtonText: "確定",
                 confirmButtonColor: "#ff7e6b",
                 showCancelButton: true,
-                cancelButtonText: "取消", 
-                inputAttributes: {
-                    autocomplete: 'off'
-                },
+                cancelButtonText: "取消",
                 preConfirm: () => {
+                    this.inputMemberName = document.querySelector("#inputMemberName").value;
                     if(this.inputMemberName === null || this.inputMemberName === "") {
                         return this.$swal("*姓名欄位未填寫")
                         .then(() => {
@@ -188,17 +241,14 @@ export default {
                 title: "修改手機",
                 html: 
                 `
-                <input type="text" value="${this.phoneInside}" v-model="inputPhone" class="swal2-input" style="display: flex justify-content: center">
+                <input type="text" value="${this.phoneInside}" id="inputPhone" autocomplete="off"  class="swal2-input">
                 `,
                 confirmButtonText: "確定",
                 confirmButtonColor: "#ff7e6b",
                 showCancelButton: true,
-                cancelButtonText: "取消", 
-                inputAttributes: {
-                    autocomplete: 'off'
-                },
+                cancelButtonText: "取消",
                 preConfirm: () => {
-
+                    this.inputPhone = document.querySelector("#inputPhone").value;
                     if(this.inputPhone === null || this.inputPhone === "") {
                         return this.$swal("*手機欄位未填寫")
                         .then(() => {
@@ -211,7 +261,7 @@ export default {
                             this.showPhone(); 
                         })
                     }
-                    else if (!this.inputPhone.match(phonePattern)) {
+                    else if (!this.inputPhone.match(this.phonePattern)) {
                         return this.$swal("*手機格式錯誤")
                         .then(() => {
                             this.showPhone(); 
@@ -264,19 +314,16 @@ export default {
                 title: "修改生日",
                 html: 
                 `
-                <input type="date" value="${this.birthdayInside}" v-model="inputBirthday" min="1900-01-01" :max="${this.maxDate}" placeholder="yyyy/mm/dd" pattern="^\\d{4}-\\d{2}-\\d{2}$" class="swal2-input" style="display: flex justify-content: center" >
+                <input type="date" value="${this.birthdayInside}" id="inputBirthday" min="1900-01-01" :max="${this.maxDate}" placeholder="yyyy/mm/dd" autocomplete="off" class="swal2-input" style="display: flex justify-content: center" >
                 `,
                 confirmButtonText: "確定",
                 confirmButtonColor: "#ff7e6b",
                 showCancelButton: true,
-                cancelButtonText: "取消", 
-                inputAttributes: {
-                    autocomplete: 'off'
-                },
+                cancelButtonText: "取消",
                 preConfirm: () => {
+                    this.inputBirthday = document.querySelector("#inputBirthday").value;
                     // 解析日期字串為日期物件
                     this.date = new Date(this.inputBirthday);
-
                     if (this.date.getFullYear() < 1900 
                     || this.date.getFullYear() > this.today.getFullYear()) {
                         return this.$swal("*生日無效")
@@ -354,6 +401,7 @@ export default {
     })
     .then(response => response.json())
     .then(data => {
+        this.dataPwd = data.member.pwd;  // 判斷修改後密碼是否與資料庫相同
         this.pwdInside = data.member.pwd;
         this.memberNameInside = data.member.memberName;
         this.phoneInside = data.member.phone;
@@ -488,7 +536,7 @@ export default {
         border-radius: 10px;
         background-color: #fff;
         box-shadow: 0 3px 10px #0000000d;
-        
+
         h2 {
             text-align: center;
             padding: 30px 0 15px;
