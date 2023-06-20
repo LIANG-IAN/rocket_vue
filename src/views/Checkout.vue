@@ -1,4 +1,6 @@
 <script>
+import axios from 'axios';
+
 export default {
     data() {
         return {
@@ -11,19 +13,14 @@ export default {
         fetchCartData() {
             const cartData = {
                 member: {
-                    memberId: sessionStorage.getItem("member_id"),
+                    memberId: "E123456789",
                 },
             };
 
-            fetch("http://localhost:8080/findMemberCart", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(cartData),
-            })
-                .then((response) => response.json())
-                .then((data) => {
+            axios
+                .post("http://localhost:8080/findMemberCart", cartData)
+                .then((response) => {
+                    const data = response.data;
                     this.cartList = data.cartList;
                     this.shoppingCartMap = JSON.parse(data.message);
                 })
@@ -34,21 +31,18 @@ export default {
         sendOrder() {
             const requestData = {
                 member: {
-                    memberId: sessionStorage.getItem("member_id"),
+                    memberId: "E123456789"
                 },
                 productId: this.selectedProducts,
-                sales: this.selectedProducts.map((productId) => this.shoppingCartMap[productId]),
+                sales: this.selectedProducts.map(
+                    (productId) => this.shoppingCartMap[productId]
+                ),
             };
 
-            fetch("http://localhost:8080/checkout", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(requestData),
-            })
-                .then((response) => response.json())
-                .then((data) => {
+            axios
+                .post("http://localhost:8080/checkout", requestData)
+                .then((response) => {
+                    const data = response.data;
                     alert(data.message);
                 })
                 .catch((error) => {
@@ -60,29 +54,30 @@ export default {
         this.fetchCartData();
     },
 };
+
 </script>
 
 <template>
-    <div>
-        <div v-for="item in cartList" :key="item.productId"
-            class="product_bg flex justify-center items-center h-48 w-auto bg-pri-green rounded-xl m-5">
-            <input type="checkbox" v-model="selectedProducts" :value="item.productId" :id="'product' + item.productId"
-                name="products">
-            <div class="w-1/4">
-                <img src="../../img/logo.jpg" id="product_img" style="width: 50px;">
-            </div>
-            <div class="w-1/2">
-                <div class="d">
-                    <p class="bg-white rounded-md p-1 mx-1 mb-2">名稱：
-                        <span id="product_show_name">{{ item.productName }}</span>
-                    </p>
+    <div class="product">
+        <div class="info">
+            <div v-for="item in cartList" :key="item.productId"
+                class="product_bg">
+                <input type="checkbox" v-model="selectedProducts" :value="item.productId" :id="'product' + item.productId"
+                    name="products">
+                <div class="img">
+                    <img class="product_img w-100 h-100"
+                        :src="`../../public/img/productWall_img/pruductWall_${item.productId}.jpg`" alt="">
                 </div>
-                <div class="d flex" name="sales" id="w">
-                    <p class="bg-white rounded-md p-1 m-1 w-1/2" id="q">
-                        我要買：
-                        <span id="sale{{ item.productId }}">{{ shoppingCartMap[item.productId] }}</span>
-                        個
-                    </p>
+                <div class="name">
+                    <div class="d">
+                        <p class="bg-white rounded-md p-1 mx-1 mb-2">名稱：<span id="product_show_name">{{ item.productName
+                        }}</span></p>
+                    </div>
+                    <div class="quantity" name="sales" id="w">
+                        <p class="bg-white rounded-md p-1 m-1 w-1/2" id="q">
+                            我要買：<span id="sale{{ item.productId }}">{{ shoppingCartMap[item.productId] }}</span>個
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -90,4 +85,38 @@ export default {
     </div>
 </template>
 
-<style></style>
+
+<style lang="scss" scoped>
+.product {
+    width: 100%;
+    height: auto;
+
+    .info{
+        width: 100%;
+        height: auto;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+    }
+    
+
+    .product_bg {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 150px;
+        width: auto;
+        border-radius: 20px;
+        margin: 5px;
+
+        .product_img {
+            width: 100px;
+            height: 100px;
+        }
+
+        .rounded-md {
+            border-radius: 4px;
+        }
+    }
+}
+</style>
