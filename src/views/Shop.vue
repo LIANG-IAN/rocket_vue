@@ -174,8 +174,8 @@ a {
             display: flex;
             flex-direction: column;
             justify-content: center;
-            margin: 20px;
             align-items: center;
+            margin: 20px;
             border: 2px solid #cfb7a3;
             border-radius: 20px;
             box-shadow: 0px 5px 5px #f2e9c6;
