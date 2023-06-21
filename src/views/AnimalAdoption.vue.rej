@@ -1,0 +1,10 @@
+diff a/src/views/AnimalAdoption.vue b/src/views/AnimalAdoption.vue	(rejected hunks)
+@@ -145,7 +145,7 @@
+         </li>
+       </ul>
+       <div class="modifyBtn">
+-        <button type="button" :class="{ adoption: isSubmitted, beforeAdoption: !isSubmitted }" @click="applyAdoption"
++        <button type="button" :class="{ adoption: isSubmitted || isAdoption, beforeAdoption: !isSubmitted|| isAdoption }" @click="applyAdoption"
+           :disabled="!isSubmitted">
+           {{ isSubmitted ? "申請領養" : "已送出" }}
+         </button>
