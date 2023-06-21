@@ -246,29 +246,144 @@ export default {
 </template>
 
 <style scoped lang="scss">
-.animal_delete {
+.animal_adoption {
   display: flex;
   justify-content: center;
   margin: 50px 0;
+
 }
 
-.delete,
-.quit,
-.update {
-  text-align: center;
-  font-size: 18px;
-  margin: 1.5rem auto;
-  padding: 1rem 2rem;
-  color: white;
-  border-radius: 0.5rem;
-  transition: ease 0.1s;
-  border: none;
-  box-shadow: 2px 2px 2px gray;
-  background-color: #FF7E6B;
+.imgBlock {
+  position: relative;
+  width: 400px;
+  height: 400px;
+  border: 1rem double #8C5E58;
+  margin-right: 50px;
+  padding: 50px;
 
-  &:hover {
-    background-color: #FFA69E;
+  .upload {
+    position: absolute;
+    left: 150px;
+    top: 20px;
+
   }
+
+  .modifyMinPic {
+    display: flex;
+
+  }
+
+  .firstPic {
+    img {
+      width: 350px;
+      height: 350px;
+    }
+  }
+
+  .otherPic {
+    img {
+      width: 50px;
+      height: 50px;
+    }
+  }
+}
+
+.modifyText {
+  width: 500px;
+  height: 500px;
+
+  .modifyTextUl {
+    text-align: start;
+    line-height: 2.5;
+    margin: 2rem 1.5rem;
+    font-size: 20px;
+    border: 2px solid black;
+    background-color: white;
+
+    input[type="date"] {
+      font-size: 20px;
+    }
+
+
+    li {
+      text-align: center;
+      font-weight: bold;
+    }
+  }
+
+  label {
+    font-size: 24px;
+  }
+
+  .modifyBtn {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 10px;
+
+    .delete,
+    .quit,
+   .update {
+
+      width: 150px;
+      height: 60px;
+      font-size: 28px;
+      font-weight: bold;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: none;
+      border-radius: 2rem;
+      box-shadow: 2px 2px 5px grey;
+      margin: 0 15px;
+      background-color: #edd76a;
+      color: #995a25;
+      scale: 0.8;
+
+      &:hover {
+        scale: 1;
+      }
+    }
+
+
+  }
+}
+
+//radio樣式
+.male,
+.female,
+.cat,
+.dog {
+  cursor: pointer;
+  width: 16px;
+  height: 16px;
+  position: relative;
+  border: none;
+
+  &::before {
+    content: '';
+    width: 16px;
+    height: 16px;
+    background-color: #fff;
+    border: 1px solid #000;
+    border-radius: 50%;
+    position: absolute;
+  }
+
+  &:checked::after {
+    content: '';
+    background-color: #8C5E58;
+    width: 16px;
+    height: 16px;
+    top: -2px;
+    left: -2px;
+    border: 4px double #fff;
+    border-radius: 50%;
+    position: absolute;
+  }
+}
+
+option {
+  font-size: 26px;
 }
 
 img {

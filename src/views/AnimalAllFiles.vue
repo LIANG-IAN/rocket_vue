@@ -71,7 +71,7 @@ export default {
     },
 
     // 判斷點擊全部、貓、狗
-    judgeClickAnimalSort(element){
+    judgeClickAnimalSort(element) {
       const target = element.target;
       if (target.classList.contains('filesBtnAll')) {
         this.getAllAnimalData();
@@ -85,12 +85,12 @@ export default {
     },
 
     // 判斷點擊者身分，決定跳轉頁面
-    determineIdentityDecideJumpPage(element){
+    determineIdentityDecideJumpPage(element) {
       let filesPic = element.target.getAttribute("data-filesPic");
       sessionStorage.setItem("filesPic", filesPic);
       if (element.target.classList.contains("filesPic")) {
         if (!element.target.classList.contains("like")) {
-          if (sessionStorage.getItem("administrator")==="true") {
+          if (sessionStorage.getItem("administrator") === "true") {
             this.$router.push("/AnimalModifyAndDelete");
           }
           else {
@@ -101,7 +101,7 @@ export default {
     },
 
     // 分頁功能
-    paging(element){
+    paging(element) {
       this.page = element.target.innerText;
     }
 
@@ -136,10 +136,9 @@ export default {
     </div>
 
     <div class="filesBanner" @click="determineIdentityDecideJumpPage">
-      <div class="filesPic"
-           v-for="(animal, index) in allAnimalResponse && allAnimalResponse.slice(page*9-9, page*9)" :key="index"
-           :style="{ backgroundImage: `url('img/animal/${animal.animalId}-1.png')` }"
-           :data-filesPic="animal.animalId">
+      <div class="filesPic" v-for="(animal, index) in allAnimalResponse && allAnimalResponse.slice(page * 9 - 9, page * 9)"
+        :key="index" :style="{ backgroundImage: `url('img/animal/${animal.animalId}-1.png')` }"
+        :data-filesPic="animal.animalId">
         <div class="filesText">
           <ul>編號:</ul>
           <ul>{{ animal.animalId }}</ul>
@@ -167,7 +166,7 @@ export default {
   .filesTitleH2 {
     font-size: 24px;
     font-weight: bolder;
-    margin-bottom: 20px;
+    margin: 20px;
     text-shadow: 1px 1px 1px #8C5E58;
   }
 
@@ -177,14 +176,22 @@ export default {
 
     button {
       width: 100px;
-      height: 30px;
-      margin: 20px;
-      background-color: rgb(182, 180, 180);
-      font-size: 18px;
+      height: 50px;
+      font-size: 28px;
       font-weight: bold;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: none;
+      border-radius: 2rem;
+      box-shadow: 2px 2px 5px grey;
+      margin: 0 15px 0 0;
+      background-color: white;
+      
+      scale: 0.8;
 
       &:hover {
-        background-color: #8C5E58;
+        scale: 1;
       }
     }
   }
@@ -196,10 +203,12 @@ export default {
   justify-content: center;
 
   .MinPage {
-    width: 20px;
-    height: 20px;
+    width: 30px;
+    height: 30px;
+    margin: 0 5px;
     background-color: rgb(0, 0, 0);
     border-radius: 50%;
+    color: #ffffff;
 
     &:hover {
       background-color: #8C5E58;

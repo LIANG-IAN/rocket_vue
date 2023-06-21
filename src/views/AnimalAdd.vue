@@ -3,67 +3,67 @@ import axios from 'axios';
 
 export default {
   data() {
-      return {
-        newAnimalId:null,
-        regDate:null,
-        taiwanCities: [
-          "基隆市",
-          "臺北市",
-          "新北市",
-          "桃園市",
-          "新竹市",
-          "新竹縣",
-          "苗栗縣",
-          "臺中市",
-          "彰化縣",
-          "南投縣",
-          "雲林縣",
-          "嘉義市",
-          "嘉義縣",
-          "臺南市",
-          "高雄市",
-          "屏東縣",
-          "臺東縣",
-          "花蓮縣",
-          "金門縣",
-          "澎湖縣",
-          "連江縣",
-          "宜蘭縣"
-        ],
-        animalName:null ,
-        sex:null ,
-        species:null,
-        type:null ,
-        regCity:null,
-        photos: [],
-        base64Body: []
-      }
+    return {
+      newAnimalId: null,
+      regDate: null,
+      taiwanCities: [
+        "基隆市",
+        "臺北市",
+        "新北市",
+        "桃園市",
+        "新竹市",
+        "新竹縣",
+        "苗栗縣",
+        "臺中市",
+        "彰化縣",
+        "南投縣",
+        "雲林縣",
+        "嘉義市",
+        "嘉義縣",
+        "臺南市",
+        "高雄市",
+        "屏東縣",
+        "臺東縣",
+        "花蓮縣",
+        "金門縣",
+        "澎湖縣",
+        "連江縣",
+        "宜蘭縣"
+      ],
+      animalName: null,
+      sex: null,
+      species: null,
+      type: null,
+      regCity: null,
+      photos: [],
+      base64Body: []
+    }
   },
   methods: {
     // 清空表單
-    reset(){
-        this.animalName = "";
-        this.type = "";
-        this.setDate();
-        this.sex = 0;
-        this.species = 0;
+    reset() {
+      this.animalName = "";
+      this.type = "";
+      this.setDate();
+      this.sex = 0;
+      this.species = 0;
     },
 
     // 獲得最後一隻動物Id
-    getLastAnimalId(){
+    getLastAnimalId() {
       return axios.get("http://localhost:8080/findLastId").then((animalRes) => {
         this.newAnimalId = animalRes.data.animalId + 1
       })
     },
 
     // 自動選擇當天日期
-    setDate(){
+    setDate() {
       const today = new Date();
       this.regDate = today.toISOString().split('T')[0];
     },
 
     // 登錄寵物資訊
-    submit(){
+    submit() {
       const body = {
         "animalList": [
           {
@@ -76,7 +76,7 @@ export default {
           }
         ]
       };
-      return  axios.post("http://localhost:8080/animalAdd", body).then(async() => {
+      return axios.post("http://localhost:8080/animalAdd", body).then(async () => {
         await this.sendPhoto(this.base64Body);
         alert("更新成功")
       })
@@ -196,7 +196,7 @@ export default {
         <li>
           <label>
             登記日期
-            <input type="date" class="regDate" v-model="regDate">
+            <input type="date" class="regDate" v-model="regDate" :min="regDate" disabled>
           </label>
         </li>
         <li>
@@ -271,6 +271,13 @@ export default {
     border: 2px solid black;
     background-color: white;
 
+    input[type="date"] {
+      font-size: 20px;
+      color: red;
+      background-color: yellow;
+    }
+
+
     li {
       text-align: center;
       font-weight: bold;
@@ -288,21 +295,27 @@ export default {
 
     .reset,
     .submit {
-      text-align: center;
-      font-size: 18px;
-      margin: 1.5rem auto;
-      padding: 1rem 2rem;
-      color: white;
-      border-radius: 0.5rem;
-      transition: ease 0.1s;
+
+      width: 150px;
+      height: 60px;
+      font-size: 28px;
+      font-weight: bold;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       border: none;
-      box-shadow: 2px 2px 2px gray;
-      background-color: #FF7E6B;
+      border-radius: 2rem;
+      box-shadow: 2px 2px 5px grey;
+      margin: 0 15px;
+      background-color: #edd76a;
+      color: #995a25;
+      scale: 0.8;
 
       &:hover {
-        background-color: #FFA69E;
+        scale: 1;
       }
     }
+
 
   }
 }
@@ -339,5 +352,9 @@ export default {
     border-radius: 50%;
     position: absolute;
   }
+}
+
+option {
+  font-size: 26px;
 }
 </style>

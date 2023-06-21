@@ -13,7 +13,7 @@ export default {
   methods: {
     // 獲得動物資料
     getAnimalInfo() {
-      return axios.post("http://localhost:8080/findByAnimalId", {"animalId": +this.inputAnimalId}).then(animalRes => {
+      return axios.post("http://localhost:8080/findByAnimalId", { "animalId": +this.inputAnimalId }).then(animalRes => {
         const animal = animalRes.data.animal;
         this.animalInfo = {
           animalId: animal.animalId,
@@ -29,17 +29,17 @@ export default {
 
     // 獲得會員資料
     getMemberInfo() {
-      return axios.post("http://localhost:8080/get_member_info", {"member_id": this.inputMemberId}).then(memberRes => {
+      return axios.post("http://localhost:8080/get_member_info", { "member_id": this.inputMemberId }).then(memberRes => {
         this.memberInfo = memberRes.data.member;
       })
     },
 
     // 通過
-    pass(){
+    pass() {
       return axios.post("http://localhost:8080/eligibility_review", {
         "animal": this.animalInfo,
         "member": this.memberInfo
-      }).then(res => {alert(res.data.message)})
+      }).then(res => { alert(res.data.message) })
     }
   }
 
@@ -112,8 +112,7 @@ export default {
     </div>
 
     <div class="reviewBtn">
-      <button type="button" class="reject"><a
-          href="mailto:?subject=審查結果&body=經過考慮決定忍痛拒絕您認養申請">不通過</a></button>
+      <button type="button" class="reject"><a href="mailto:?subject=審查結果&body=經過考慮決定忍痛拒絕您認養申請">不通過</a></button>
       <button type="button" class="reviewPass" @click="pass">通過</button>
     </div>
   </div>
@@ -138,9 +137,23 @@ export default {
     align-items: center;
 
     button {
+      width: 80px;
+      height: 50px;
+      font-size: 20px;
+      font-weight: bold;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: none;
+      border-radius: 10px;
+      box-shadow: 2px 2px 5px grey;
+      margin: 0 15px 0 0;
+      background-color: #edd76a;
+      color: #995a25;
+      scale: 0.8;
 
       &:hover {
-        background-color: #FFA69E;
+        scale: 1;
       }
 
       &:active {
@@ -169,21 +182,20 @@ export default {
 }
 
 .reviewBtn {
-
   .reject,
   .reviewPass {
     width: 130px;
     text-align: center;
     font-size: 18px;
     font-weight: bold;
-    margin-bottom: 50px;
+    margin:0 20px 50px 20px;
     padding: 1rem 2rem;
     color: white;
-    border-radius: 1rem;
+    border-radius: 1.5rem;
     transition: ease 0.1s;
     border: none;
     box-shadow: 2px 2px 5px gray;
-    background-color: #8C5E58;
+    background-color: #995a25;
 
     a {
       color: white;
@@ -194,5 +206,4 @@ export default {
     }
   }
 }
-
 </style>

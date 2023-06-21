@@ -1,4 +1,18 @@
 <script>
+
+import { Navigation, Pagination, Autoplay, EffectCoverflow } from 'swiper';
+
+import { Swiper, SwiperSlide } from 'swiper/vue';
+
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import 'swiper/css/autoplay';
+import 'swiper/css/bundle';
+
+
+
+
 //教育頁面的tab切換
 export default {
     data() {
@@ -37,6 +51,32 @@ export default {
             this.tabs[index].isActive = true;
         },
     },
+    //swiper
+    components: {
+        Swiper,
+        SwiperSlide,
+    },
+    setup() {
+        let coverflowEffect = {
+            rotate: 50,
+            stretch: 0,
+            depth: 100,
+            modifier: 1,
+            slideShadows: false,
+        };
+        let coverflowEffect1 = {
+            rotate: 0,
+            stretch: 150,
+            depth: 500,
+            modifier: 1,
+            slideShadows: false,
+        };
+        return {
+            modules: [Navigation, Pagination, Autoplay, EffectCoverflow],
+            coverflowEffect,
+            coverflowEffect1
+        };
+    },
 };
 
 </script>
@@ -59,12 +99,185 @@ export default {
     <br>
 
     <!-- 商品輪播牆 -->
-    <h2>壞掉的swiper</h2>
+    <div class="productWall">
+        <div class="swiper mySwiper pruductBackGround">
+            <div class="swiper-wrapper pruductGroup">
+                <swiper :modules="modules" :slides-per-view="3" loop :space-between="0" navigation
+                    :pagination="{ clickable: true }" @swiper="onSwiper" @slideChange="onSlideChange"
+                    :autoplay="{ delay: 3000 }" :centeredSlides="true" :effect="'coverflow'"
+                    :coverflow-effect="coverflowEffect">
+                    <swiper-slide class="pruductSlide">
+                        <h2 class="saleWord">
+                            限時特價中!!
+                            <font-awesome-icon :icon="['fas', 'cart-shopping']" beat style="color: #000000;" />
+                        </h2>
+                        <img src="../../public/img/productWall_img/pruductWall_1.jpg" alt="">
+                    </swiper-slide>
+
+                    <swiper-slide class="pruductSlide">
+                        <h2 class="saleWord">
+                            限時特價中!!
+                            <font-awesome-icon :icon="['fas', 'cart-shopping']" beat style="color: #000000;" />
+                        </h2>
+                        <img src="../../public/img/productWall_img/pruductWall_2.jpg" alt="">
+                    </swiper-slide>
+
+                    <swiper-slide class="pruductSlide">
+                        <h2 class="saleWord">
+                            限時特價中!!
+                            <font-awesome-icon :icon="['fas', 'cart-shopping']" beat style="color: #000000;" />
+                        </h2>
+                        <img src="../../public/img/productWall_img/pruductWall_3.jpg" alt="">
+                    </swiper-slide>
+
+                    <swiper-slide class="pruductSlide">
+                        <h2 class="saleWord">
+                            限時特價中!!
+                            <font-awesome-icon :icon="['fas', 'cart-shopping']" beat style="color: #000000;" />
+                        </h2>
+                        <img src="../../public/img/productWall_img/pruductWall_4.jpg" alt="">
+                    </swiper-slide>
+                    <swiper-slide class="pruductSlide">
+                        <h2 class="saleWord">
+                            限時特價中!!
+                            <font-awesome-icon :icon="['fas', 'cart-shopping']" beat style="color: #000000;" />
+                        </h2>
+                        <img src="../../public/img/productWall_img/pruductWall_5.jpg" alt="">
+                    </swiper-slide>
+                    <swiper-slide class="pruductSlide">
+                        <h2 class="saleWord">
+                            限時特價中!!
+                            <font-awesome-icon :icon="['fas', 'cart-shopping']" beat style="color: #000000;" />
+                        </h2>
+                        <img src="../../public/img/productWall_img/pruductWall_6.jpg" alt="">
+                    </swiper-slide>
+                    <swiper-slide class="pruductSlide">
+                        <h2 class="saleWord">
+                            限時特價中!!
+                            <font-awesome-icon :icon="['fas', 'cart-shopping']" beat style="color: #000000;" />
+                        </h2>
+                        <img src="../../public/img/productWall_img/pruductWall_7.jpg" alt="">
+                    </swiper-slide>
+                    <swiper-slide class="pruductSlide">
+                        <h2 class="saleWord">
+                            限時特價中!!
+                            <font-awesome-icon :icon="['fas', 'cart-shopping']" beat style="color: #000000;" />
+                        </h2>
+                        <img src="../../public/img/productWall_img/pruductWall_8.jpg" alt="">
+                    </swiper-slide>
+                    <swiper-slide class="pruductSlide">
+                        <h2 class="saleWord">
+                            限時特價中!!
+                            <font-awesome-icon :icon="['fas', 'cart-shopping']" beat style="color: #000000;" />
+                        </h2>
+                        <img src="../../public/img/productWall_img/pruductWall_9.jpg" alt="">
+                    </swiper-slide>
+                </swiper>
+            </div>
+        </div>
+    </div>
 
     <hr class="hrStyle">
 
-    <!-- 帶領養動物輪播牆 -->
-    <h2>壞掉的swiper*2</h2>
+    <!-- 待領養動物輪播牆 -->
+    <div class="animalWall">
+        <div class="swiper mySwiper animalBackGround">
+            <div class="swiper-wrapper animalGroup">
+                <swiper :modules="modules" :slides-per-view="3" loop :space-between="0" navigation @swiper="onSwiper"
+                    @slideChange="onSlideChange" :autoplay="{ delay: 3000 }" :centeredSlides="true" :effect="'coverflow'"
+                    :coverflow-effect="coverflowEffect1">
+                    <swiper-slide class="animalSlide">
+                        <div class="animalCard">
+                            <div class="animalCardImg aniPic1"></div>
+                            <div class="animalCardText">
+                                <p class="aniP">
+                                    <font-awesome-icon :icon="['fas', 'paw']" fade style="color: #995a25;" />
+                                    小白狗勾
+                                </p>
+                                <button type="button" class="aniBtn">點我</button>
+                            </div>
+                        </div>
+                    </swiper-slide>
+                    <swiper-slide class="animalSlide">
+                        <div class="animalCard">
+                            <div class="animalCardImg aniPic2"></div>
+                            <div class="animalCardText">
+                                <p class="aniP">
+                                    <font-awesome-icon :icon="['fas', 'paw']" fade style="color: #995a25;" />
+                                    小胖貓
+                                </p>
+                                <button type="button" class="aniBtn">點我</button>
+                            </div>
+                        </div>
+                    </swiper-slide>
+                    <swiper-slide class="animalSlide">
+                        <div class="animalCard">
+                            <div class="animalCardImg aniPic3"></div>
+                            <div class="animalCardText">
+                                <p class="aniP">
+                                    <font-awesome-icon :icon="['fas', 'paw']" fade style="color: #995a25;" />
+                                    小吉喵喵
+                                </p>
+                                <button type="button" class="aniBtn">點我</button>
+                            </div>
+                        </div>
+                    </swiper-slide>
+                    <swiper-slide class="animalSlide">
+                        <div class="animalCard">
+                            <div class="animalCardImg aniPic4"></div>
+                            <div class="animalCardText">
+                                <p class="aniP">
+                                    <font-awesome-icon :icon="['fas', 'paw']" fade style="color: #995a25;" />
+                                    長頸鹿
+                                </p>
+                                <button type="button" class="aniBtn">點我</button>
+                            </div>
+                        </div>
+                    </swiper-slide>
+                    <swiper-slide class="animalSlide">
+                        <div class="animalCard">
+                            <div class="animalCardImg aniPic5"></div>
+                            <div class="animalCardText">
+                                <p class="aniP">
+                                    <font-awesome-icon :icon="['fas', 'paw']" fade style="color: #995a25;" />
+                                    吉娃娃
+                                </p>
+                                <button type="button" class="aniBtn">點我</button>
+                            </div>
+                        </div>
+                    </swiper-slide>
+                    <swiper-slide class="animalSlide">
+                        <div class="animalCard">
+                            <div class="animalCardImg aniPic6"></div>
+                            <div class="animalCardText">
+                                <p class="aniP">
+                                    <font-awesome-icon :icon="['fas', 'paw']" fade style="color: #995a25;" />
+                                    小普羅
+                                </p>
+                                <button type="button" class="aniBtn">點我</button>
+                            </div>
+                        </div>
+                    </swiper-slide>
+                    <swiper-slide class="animalSlide">
+                        <div class="animalCard">
+                            <div class="animalCardImg aniPic7"></div>
+                            <div class="animalCardText">
+                                <p class="aniP">
+                                    <font-awesome-icon :icon="['fas', 'paw']" fade style="color: #995a25;" />
+                                    喵喵
+                                </p>
+                                <button type="button" class="aniBtn">點我</button>
+                            </div>
+                        </div>
+                    </swiper-slide>
+                </swiper>
+            </div>
+        </div>
+    </div>
+
+    <br>
+    <hr class="hrStyle">
+
     <div class="teachInfo">
         <div class="teachInfoImgBot">
             <div class="infoImgBot1"></div>
@@ -99,24 +312,28 @@ export default {
 
     <div class="newsBoxOutside">
         <div class="newsBox">
-            <a href="https://livestock.kcg.gov.tw/ActivitiesDetailC003200.aspx?Cond=53c0f801-4502-4954-8c11-198e5aa7f596" target="_blank">
-            <img class="newsPic" src="../../public/img/animalNews_Img/newsPic1.jpg" alt="狂犬病">
+            <a href="https://livestock.kcg.gov.tw/ActivitiesDetailC003200.aspx?Cond=53c0f801-4502-4954-8c11-198e5aa7f596"
+                target="_blank">
+                <img class="newsPic" src="../../public/img/animalNews_Img/newsPic1.jpg" alt="狂犬病">
             </a>
             <p class="newsP">
                 112年6月高雄市狂犬病高風險地區犬、貓狂犬病疫苗注射暨寵物植入晶片登記及絕育宣導巡迴活動
             </p>
-            <a href="https://livestock.kcg.gov.tw/ActivitiesDetailC003200.aspx?Cond=53c0f801-4502-4954-8c11-198e5aa7f596" target="_blank">
+            <a href="https://livestock.kcg.gov.tw/ActivitiesDetailC003200.aspx?Cond=53c0f801-4502-4954-8c11-198e5aa7f596"
+                target="_blank">
                 <button type="button" class="newsTextBtn">More</button>
             </a>
         </div>
         <div class="newsBox">
-            <a href="https://livestock.kcg.gov.tw/ActivitiesDetailC003300.aspx?Cond=50f0666e-46a5-46f7-85d3-533911e874ad" target="_blank">
-            <img class="newsPic" src="../../public/img/animalNews_Img/newsPic3.jpg" alt="浪浪試養">
+            <a href="https://livestock.kcg.gov.tw/ActivitiesDetailC003300.aspx?Cond=50f0666e-46a5-46f7-85d3-533911e874ad"
+                target="_blank">
+                <img class="newsPic" src="../../public/img/animalNews_Img/newsPic3.jpg" alt="浪浪試養">
             </a>
             <p class="newsP">
                 想要毛小孩相伴? 高市動保處推浪浪試養30天 認養特定條件犬隻 加碼送寵物保險補助最高3000元
             </p>
-            <a href="https://livestock.kcg.gov.tw/ActivitiesDetailC003300.aspx?Cond=50f0666e-46a5-46f7-85d3-533911e874ad" target="_blank">
+            <a href="https://livestock.kcg.gov.tw/ActivitiesDetailC003300.aspx?Cond=50f0666e-46a5-46f7-85d3-533911e874ad"
+                target="_blank">
                 <button type="button" class="newsTextBtn">More</button>
             </a>
         </div>
@@ -124,7 +341,7 @@ export default {
             <a href="https://www.thenewslens.com/article/174589" target="_blank">
                 <img class="newsPic" src="../../public/img/animalNews_Img/newsPic2.jpg" alt="「狗」拉松">
             </a>
-            
+
             <p class="newsP">
                 西班牙「狗」拉松公益路跑，逾5000組毛孩和飼主呼籲以領養代替購買、不棄養寵物
             </p>
@@ -220,6 +437,156 @@ hr.hrStyle {
             rgba(0, 0, 0, 0));
 }
 
+//商品牆
+.pruductWall {
+    width: 100%;
+    height: 500px;
+    position: relative;
+    margin: 50px 0;
+    padding: 0 20px;
+}
+
+.pruductBackGround {
+    //內部輪播圖片大小
+    width: 100%;
+    height: 500px;
+
+}
+
+.pruductSlide {
+    background-position: center;
+    background-size: cover;
+    margin-right: 10px;
+    position: relative;
+    display: block;
+    width: 100%;
+    background-repeat: no-repeat;
+
+}
+
+.saleWord {
+    width: 300px;
+    height: 50px;
+    position: absolute;
+    bottom: 80px;
+    right: 27%;
+    padding-top: 10px;
+    background-color: white;
+    color: black;
+    font-size: 36px;
+    text-align: center;
+    font-weight: bold;
+    text-shadow: 2px 2px 3px gray;
+
+}
+
+.swiper-slide img {
+    height: 300px;
+    position: absolute;
+    top: 12%;
+    right: 27%;
+
+}
+
+//待養動物區
+.animalCardWall {
+    width: 100%;
+    height: 500px;
+    position: relative;
+    margin: 50px 0;
+    padding: 0 20px;
+}
+
+.animalCardBackGround {
+    //內部輪播圖片大小
+    width: 100%;
+    height: 600px;
+}
+
+.animalCardSlide {
+    background-position: center;
+    background-size: cover;
+    position: relative;
+    display: block;
+    width: 100%;
+    background-repeat: no-repeat;
+
+}
+
+.animalCardImg {
+    width: 400px;
+    height: 400px;
+    background-position: top;
+    background-size: cover;
+    border-radius: 3rem 0 0 0;
+}
+
+.aniPic1 {
+    background-image: url("../../public/img/animal/19-1.png");
+}
+
+.aniPic2 {
+    background-image: url("../../public/img/animal/1-4.png");
+}
+
+.aniPic3 {
+    background-image: url("../../public/img/animal/18-1.png");
+}
+
+.aniPic4 {
+    background-image: url("../../public/img/animal/100.jpg");
+}
+
+.aniPic5 {
+    background-image: url("../../public/img/animal/9-1.png");
+
+}
+
+.aniPic6 {
+    background-image: url("../../public/img/animal/101.jpeg");
+
+}
+
+.aniPic7 {
+    background-image: url("../../public/img/animal/16-1.png");
+
+}
+
+.animalCardText {
+    background-color: white;
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 0 0 3rem 0;
+
+
+    .aniP {
+        margin: 10px;
+        line-height: 1.5;
+        font-size: 24px;
+        font-weight: bold;
+    }
+
+
+    .aniBtn {
+        width: 200px;
+        font-size: 24px;
+        text-align: center;
+        margin: 20px 0;
+        border: none;
+        border-radius: 2rem;
+        box-shadow: 2px 2px 2px gray;
+        background-color: #edd76a;
+        color: #995a25;
+        scale: 0.8;
+        font-weight: bold;
+
+        &:hover {
+            scale: 1;
+        }
+    }
+}
 
 //教育資訊區
 .teachInfo {
@@ -407,5 +774,29 @@ hr.hrStyle {
     &:hover {
         scale: 1;
     }
+}
+</style>
+
+<style>
+.swiper-pagination-bullet {
+    width: 6px;
+    height: 6px;
+    background-color: #995a25;
+    opacity: 0.5;
+
+}
+
+.swiper-pagination-bullet-active {
+    width: 14px;
+    height: 6px;
+    border-radius: 3px;
+    opacity: 1;
+    background-color: #995a25;
+}
+
+.swiper-button-prev,
+.swiper-button-next {
+    color: #995a25;
+    font-size: large;
 }
 </style>
