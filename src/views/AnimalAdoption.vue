@@ -8,9 +8,10 @@ export default {
       photos: [],
       // TODO
       memberId: sessionStorage.getItem("member_id"),
-      isSubmitted: true,
+      filesPic : +sessionStorage.getItem("filesPic"),
       // TODO
-      filesPic : +sessionStorage.getItem("filesPic")
+      isSubmitted: false,
+      isAdoption: false,
     };
   },
   methods: {
@@ -39,8 +40,15 @@ export default {
             species: +animal.species,
             type: animal.type,
             regDate: animal.regDate,
+            adoptDate: animal.adoptDate,
             regCity: animal.regCity
           };
+          console.log(animal.adoptDate)
+          console.log(this.isAdoption)
+          console.log(this.isSubmitted)
+          if (animal.adoptDate === null){
+            this.isAdoption = true;
+          }
         })
     },
 
@@ -137,7 +145,7 @@ export default {
         </li>
       </ul>
       <div class="modifyBtn">
-        <button type="button" :class="{ adoption: isSubmitted, beforeAdoption: !isSubmitted }" @click="applyAdoption"
+        <button type="button" :class="{ adoption: isSubmitted || isAdoption, beforeAdoption: !isSubmitted|| isAdoption }" @click="applyAdoption"
           :disabled="!isSubmitted">
           {{ isSubmitted ? "申請領養" : "已送出" }}
         </button>
