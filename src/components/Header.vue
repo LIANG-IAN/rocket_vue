@@ -172,7 +172,6 @@ header {
     scale: 0.8;
 
     &:hover {
-      background-color: #edd76a;
       scale: 1;
     }
   }
