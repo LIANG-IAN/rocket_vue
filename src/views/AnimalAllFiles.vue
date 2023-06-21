@@ -93,6 +93,7 @@ export default {
           if (sessionStorage.getItem("administrator") === "true") {
             this.$router.push("/AnimalModifyAndDelete");
           }
+
           else {
             this.$router.push("/AnimalAdoption");
           }

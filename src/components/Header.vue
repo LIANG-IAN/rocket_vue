@@ -1,78 +1,90 @@
 <script>
-import { RouterLink } from 'vue-router';
+import {RouterLink} from 'vue-router';
 
+export default {
+  data() {
+    return {
+      userName: sessionStorage.getItem("member_id"),
+      administrator: sessionStorage.getItem("administrator"),
+    }
+  },
+mounted() {
+  console.log(sessionStorage.getItem("administrator"),)
+}
+}
 
 </script>
 
 <template>
   <body>
     <header>
-        <div class="title">
-            <div class="logo">
-              <a href="/">
+      <div class="title">
+        <div class="logo">
+          <a href="/">
             <img
-              src="https://png.pngtree.com/png-clipart/20221014/ourmid/pngtree-cartoon-cute-pet-animal-logo-png-image_6150426.png"
-              alt="LOGO">
+                src="https://png.pngtree.com/png-clipart/20221014/ourmid/pngtree-cartoon-cute-pet-animal-logo-png-image_6150426.png"
+                alt="LOGO">
           </a>
-            </div>
-            <ul class="drop_down_menu">
-                <li class="hideLi">
-                  <RouterLink to="/" class="hideLi_a">首頁</RouterLink>
-                    <ul class="hideUl unMember">
-                        <li><a href="#" target="_blank">動物認養</a>
-                        </li>
-                        <li><a href="https://livestock.kcg.gov.tw/ActivitiesListC003200.aspx" target="_blank">最新消息</a>
-                        </li>
-                        <li>
-                          <RouterLink to="/shop" class="link">線上商城</RouterLink>
-                        </li>
-                        <li><a href="#Jump1">教育課程</a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="hideLi"><a class="hideLi_a" href="#">關於</a>
-                    <ul class="hideUl unMember">
-                        <li><a href="#">園區資訊</a>
-                        </li>
-                        <li><a href="#">聯絡我們</a>
-                        </li>
-                        <li><a href="#">常見問答</a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="hideLi"><a class="hideLi_a" href="#">服務</a>
-                    <ul class="hideUl unMember">
-                        <li><a href="#">動物防疫</a>
-                        </li>
-                        <li><a href="#">拾獲救援</a>
-                        </li>
-                        <li><a href="#">登記絕育</a>
-                        </li>
-                        <li><a href="#">失蹤協尋</a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="hideLi">
-                  <RouterLink to="/animalAllFiles" class="hideLi_a">動物</RouterLink>
-                    <ul class="hideUl memberIn" id="animalDrop">
-                        <li>
-                          <RouterLink to="/animalAdoptionReview">審查</RouterLink>
-                        </li>
-                        <li>
-                          <RouterLink to="/animalAdd">增加</RouterLink>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-            <div class="btn">
-                <RouterLink to="/loginSignup/signup">
-                    <button type="button">註冊</button>
-                </RouterLink>
-                <RouterLink to="/loginSignup/login">
-                    <button type="button">登入</button>
-                </RouterLink>
-            </div>
         </div>
+        <ul class="drop_down_menu">
+          <li class="hideLi">
+            <RouterLink to="/" class="hideLi_a">首頁</RouterLink>
+            <ul class="hideUl unMember">
+              <li><a href="#" target="_blank">動物認養</a>
+              </li>
+              <li><a href="https://livestock.kcg.gov.tw/ActivitiesListC003200.aspx" target="_blank">最新消息</a>
+              </li>
+              <li>
+                <RouterLink to="/shop" class="link">線上商城</RouterLink>
+              </li>
+              <li><a href="#Jump1">教育課程</a>
+              </li>
+            </ul>
+          </li>
+          <li class="hideLi"><a class="hideLi_a" href="#">關於</a>
+            <ul class="hideUl unMember">
+              <li><a href="#">園區資訊</a>
+              </li>
+              <li><a href="#">聯絡我們</a>
+              </li>
+              <li><a href="#">常見問答</a>
+              </li>
+            </ul>
+          </li>
+          <li class="hideLi"><a class="hideLi_a" href="#">服務</a>
+            <ul class="hideUl unMember">
+              <li><a href="#">動物防疫</a>
+              </li>
+              <li><a href="#">拾獲救援</a>
+              </li>
+              <li><a href="#">登記絕育</a>
+              </li>
+              <li><a href="#">失蹤協尋</a>
+              </li>
+            </ul>
+          </li>
+          <li class="hideLi">
+            <RouterLink to="/animalAllFiles" class="hideLi_a">動物</RouterLink>
+            <ul class="hideUl" id="animalDrop" :class="{memberIn : administrator ==='ture',unMember: administrator==='ture' }">
+              <li>
+                <RouterLink to="/animalAdoptionReview">審查</RouterLink>
+              </li>
+              <li>
+                <RouterLink to="/animalAdd">增加</RouterLink>
+              </li>
+            </ul>
+          </li>
+        </ul>
+        <div class="btn">
+          <RouterLink to="/loginSignup/signup">
+            <button type="button">註冊</button>
+          </RouterLink>
+          <RouterLink to="/loginSignup/login">
+            <button type="button">登入</button>
+          </RouterLink>
+        </div>
+        <p class="welcomeUser" v-if="userName && userName.length > 0">您好, {{ userName }}</p>
+      </div>
     </header>
   </body>
 </template>
@@ -84,7 +96,6 @@ header {
   justify-content: space-between;
   width: 100%;
   margin: 0 auto;
-
 
 
   img {
@@ -99,6 +110,7 @@ header {
     justify-content: space-between;
     align-items: center;
     background-color: #995a25;
+    position: relative;
 
 
     .drop_down_menu {
@@ -152,6 +164,8 @@ header {
     .memberIn {
       display: none;
     }
+
+
   }
 
   .btn {
@@ -159,6 +173,7 @@ header {
     justify-content: center;
     align-items: center;
     margin-left: auto;
+
   }
 
   button {
@@ -181,5 +196,12 @@ header {
       scale: 1;
     }
   }
+}
+
+.welcomeUser {
+  position: absolute;
+  color: white;
+  top: 100px;
+  right: 10px;
 }
 </style>

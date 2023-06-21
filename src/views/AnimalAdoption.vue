@@ -8,19 +8,27 @@ export default {
       photos: [],
       // TODO
       memberId: sessionStorage.getItem("member_id"),
-      isSubmitted: true,
       // TODO
-      filesPic : +sessionStorage.getItem("filesPic")
+      filesPic : +sessionStorage.getItem("filesPic"),
+      isSubmitted: true,
+      isAdoption: true,
     };
   },
   methods: {
     // 領養申請
     applyAdoption() {
+      if (this.animalInfo.adoptDate !== null){
+        return alert("已被領養");
+      }
+        if (this.memberId === null){
+            alert("請先登入");
+            return this.$router.push("/loginSignup/login");
+        }
       const body = {
         member_id: this.memberId,
         animal: this.animalInfo
       };
-      this.isSubmitted = false;
+      this.isSubmitted = true;
       axios.post("http://localhost:8080/adoption", body)
         .then((response) => {
           alert(response.data.message);
@@ -39,8 +47,13 @@ export default {
             species: +animal.species,
             type: animal.type,
             regDate: animal.regDate,
-            regCity: animal.regCity
+            regCity: animal.regCity,
+            adoptDate: animal.adoptDate
           };
+          if (this.animalInfo.adoptDate === null){
+            this.isAdoption = false;
+          }
+
         })
     },
 
@@ -83,7 +96,6 @@ export default {
   mounted() {
     this.getAnimalInfo(this.filesPic);
     this.countImg();
-
   },
 
 };
@@ -136,10 +148,10 @@ export default {
           <span class="regCity">{{ animalInfo.regCity }}</span>
         </li>
       </ul>
+
       <div class="modifyBtn">
-        <button type="button" :class="{ adoption: isSubmitted, beforeAdoption: !isSubmitted }" @click="applyAdoption"
-          :disabled="!isSubmitted">
-          {{ isSubmitted ? "申請領養" : "已送出" }}
+        <button type="button" :class="{ adoption: !isAdoption&!isSubmitted, beforeAdoption: isAdoption|isSubmitted }" @click="applyAdoption">
+          {{}}
         </button>
       </div>
     </div>

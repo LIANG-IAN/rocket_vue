@@ -52,7 +52,7 @@ export default {
     // 獲得最後一隻動物Id
     getLastAnimalId() {
       return axios.get("http://localhost:8080/findLastId").then((animalRes) => {
-        this.newAnimalId = animalRes.data.animalId + 1
+        this.newAnimalId = animalRes.data.animalId
       })
     },
 
@@ -255,6 +255,7 @@ export default {
     img {
       width: 50px;
       height: 50px;
+      margin-left: 10px;
     }
   }
 }
@@ -273,8 +274,6 @@ export default {
 
     input[type="date"] {
       font-size: 20px;
-      color: red;
-      background-color: yellow;
     }
 
 
