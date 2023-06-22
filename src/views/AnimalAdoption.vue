@@ -29,11 +29,14 @@ export default {
         animal: this.animalInfo
       };
       this.canAdoption = true;
+      this.isSubmit = true
       axios.post("http://localhost:8080/adoption", body)
         .then((response) => {
+          if (response.data.message!=="送審成功"){
+            this.isSubmit = false;
+          }
           alert(response.data.message);
         })
-      this.isSubmit = true
     },
 
     // 獲取動物資料
@@ -47,15 +50,13 @@ export default {
             sex: +animal.sex,
             species: +animal.species,
             type: animal.type,
+            regCity: animal.regCity,
             regDate: animal.regDate,
             adoptDate: animal.adoptDate,
           };
-          console.log(animal.adoptDate)
-          console.log(this.canAdoption)
           if (animal.adoptDate === null) {
             this.canAdoption = true;
           }
-          console.log(this.canAdoption)
         })
     },
 
@@ -250,6 +251,7 @@ body button {
       background-color: #edd76a;
       color: #995a25;
       scale: 0.8;
+      cursor: pointer;
 
       &:hover {
         scale: 1;

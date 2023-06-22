@@ -1,5 +1,5 @@
 <script>
-import { RouterLink } from 'vue-router';
+import {RouterLink} from 'vue-router';
 
 export default {
   data() {
@@ -8,6 +8,7 @@ export default {
       administrator: sessionStorage.getItem("administrator"),
       isAdministrator: false,
       isMember: false,
+      showAdministrator: ""
     }
   },
   mounted() {
@@ -17,14 +18,13 @@ export default {
   methods: {
     isAdministratorLogin() {
       if (sessionStorage.getItem("administrator") === "true") {
-        this.isAdministrator = true,
-          console.log(this.isAdministrator)
+        this.isAdministrator = true;
+        this.showAdministrator = "管理員"
       }
     },
     isMemberLogin() {
       if (sessionStorage.getItem("member_id")) {
-        this.isMember = true,
-          console.log(this.isMember)
+        this.isMember = true;
       }
     },
     logOut() {
@@ -33,6 +33,11 @@ export default {
       this.isMember = false;
       this.isAdministrator = false;
       alert("您已登出");
+      this.$router.push("/");
+
+      setTimeout(() => {
+        location.reload();
+      }, 100);
     }
   }
 }
@@ -46,8 +51,8 @@ export default {
         <div class="logo">
           <a href="/">
             <img
-              src="https://png.pngtree.com/png-clipart/20221014/ourmid/pngtree-cartoon-cute-pet-animal-logo-png-image_6150426.png"
-              alt="LOGO">
+                src="https://png.pngtree.com/png-clipart/20221014/ourmid/pngtree-cartoon-cute-pet-animal-logo-png-image_6150426.png"
+                alt="LOGO">
           </a>
         </div>
         <ul class="drop_down_menu">
@@ -90,7 +95,7 @@ export default {
           <li class="hideLi">
             <RouterLink to="/animalAllFiles" class="hideLi_a">動物</RouterLink>
             <ul class="hideUl" id="animalDrop"
-              :class="{ memberIn: administrator === 'true', unMember: administrator === 'true' }">
+                :class="{ memberIn: administrator === 'true', unMember: administrator === 'true' }">
               <li>
                 <RouterLink to="/animalAdoptionReview">審查</RouterLink>
               </li>
@@ -117,7 +122,8 @@ export default {
             <button type="button">登出</button>
           </RouterLink>
         </div>
-        <p class="welcomeUser" v-if="userName && userName.length > 0 && isMember">您好, {{ userName }}</p>
+        <p class="welcomeUser" v-if="userName && userName.length > 0 && isMember">您好, {{ userName }}
+          {{ showAdministrator }}</p>
       </div>
     </header>
   </body>
