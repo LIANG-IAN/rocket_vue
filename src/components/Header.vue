@@ -1,16 +1,40 @@
 <script>
-import {RouterLink} from 'vue-router';
+import { RouterLink } from 'vue-router';
 
 export default {
   data() {
     return {
       userName: sessionStorage.getItem("member_id"),
       administrator: sessionStorage.getItem("administrator"),
+      isAdministrator: false,
+      isMember: false,
     }
   },
-mounted() {
-  console.log(sessionStorage.getItem("administrator"),)
-}
+  mounted() {
+    this.isMemberLogin();
+    this.isAdministratorLogin();
+  },
+  methods: {
+    isAdministratorLogin() {
+      if (sessionStorage.getItem("administrator") === "true") {
+        this.isAdministrator = true,
+          console.log(this.isAdministrator)
+      }
+    },
+    isMemberLogin() {
+      if (sessionStorage.getItem("member_id")) {
+        this.isMember = true,
+          console.log(this.isMember)
+      }
+    },
+    logOut() {
+      sessionStorage.removeItem("member_id");
+      sessionStorage.removeItem("administrator");
+      this.isMember = false;
+      this.isAdministrator = false;
+      alert("您已登出");
+    }
+  }
 }
 
 </script>
@@ -22,8 +46,8 @@ mounted() {
         <div class="logo">
           <a href="/">
             <img
-                src="https://png.pngtree.com/png-clipart/20221014/ourmid/pngtree-cartoon-cute-pet-animal-logo-png-image_6150426.png"
-                alt="LOGO">
+              src="https://png.pngtree.com/png-clipart/20221014/ourmid/pngtree-cartoon-cute-pet-animal-logo-png-image_6150426.png"
+              alt="LOGO">
           </a>
         </div>
         <ul class="drop_down_menu">
@@ -65,7 +89,8 @@ mounted() {
           </li>
           <li class="hideLi">
             <RouterLink to="/animalAllFiles" class="hideLi_a">動物</RouterLink>
-            <ul class="hideUl" id="animalDrop" :class="{memberIn : administrator ==='ture',unMember: administrator==='ture' }">
+            <ul class="hideUl" id="animalDrop"
+              :class="{ memberIn: administrator === 'true', unMember: administrator === 'true' }">
               <li>
                 <RouterLink to="/animalAdoptionReview">審查</RouterLink>
               </li>
@@ -76,14 +101,23 @@ mounted() {
           </li>
         </ul>
         <div class="btn">
-          <RouterLink to="/loginSignup/signup">
+          <RouterLink v-if="isAdministrator" to="/product">
+            <button type="button">商品總覽</button>
+          </RouterLink>
+          <RouterLink v-if="!isMember" to="/loginSignup/signup">
             <button type="button">註冊</button>
           </RouterLink>
-          <RouterLink to="/loginSignup/login">
+          <RouterLink v-if="isMember && !isAdministrator" to="/memberInfo">
+            <button type="button">會員中心</button>
+          </RouterLink>
+          <RouterLink v-if="!isMember" to="/loginSignup/login">
             <button type="button">登入</button>
           </RouterLink>
+          <RouterLink v-if="isMember" @click="logOut()" to="/">
+            <button type="button">登出</button>
+          </RouterLink>
         </div>
-        <p class="welcomeUser" v-if="userName && userName.length > 0">您好, {{ userName }}</p>
+        <p class="welcomeUser" v-if="userName && userName.length > 0 && isMember">您好, {{ userName }}</p>
       </div>
     </header>
   </body>

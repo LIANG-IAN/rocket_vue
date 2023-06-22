@@ -8,31 +8,32 @@ export default {
       photos: [],
       // TODO
       memberId: sessionStorage.getItem("member_id"),
-      filesPic : +sessionStorage.getItem("filesPic"),
+      filesPic: +sessionStorage.getItem("filesPic"),
       // TODO
-      isSubmitted: false,
-      isAdoption: false,
+      canAdoption: false,
+      isSubmit: false,
     }
   },
   methods: {
     // 領養申請
     applyAdoption() {
-      if (this.animalInfo.adoptDate !== null){
+      if (this.animalInfo.adoptDate !== null) {
         return alert("已被領養");
       }
-        if (this.memberId === null){
-            alert("請先登入");
-            return this.$router.push("/loginSignup/login");
-        }
+      if (this.memberId === null) {
+        alert("請先登入");
+        return this.$router.push("/loginSignup/login");
+      }
       const body = {
         member_id: this.memberId,
         animal: this.animalInfo
       };
-      this.isSubmitted = true;
+      this.canAdoption = true;
       axios.post("http://localhost:8080/adoption", body)
         .then((response) => {
           alert(response.data.message);
         })
+      this.isSubmit = true
     },
 
     // 獲取動物資料
@@ -50,11 +51,11 @@ export default {
             adoptDate: animal.adoptDate,
           };
           console.log(animal.adoptDate)
-          console.log(this.isAdoption)
-          console.log(this.isSubmitted)
-          if (animal.adoptDate === null){
-            this.isAdoption = true;
+          console.log(this.canAdoption)
+          if (animal.adoptDate === null) {
+            this.canAdoption = true;
           }
+          console.log(this.canAdoption)
         })
     },
 
@@ -151,9 +152,14 @@ export default {
       </ul>
 
       <div class="modifyBtn">
-        <button type="button" :class="{ adoption: isSubmitted || isAdoption, beforeAdoption: !isSubmitted|| isAdoption }" @click="applyAdoption"
-          :disabled="!isSubmitted">
-          {{ isSubmitted ? "申請領養" : "已送出" }}
+        <button type="button" v-if="canAdoption && !isSubmit" @click="applyAdoption()" class="beforeAdoption">
+          申請領養
+        </button>
+        <button type="button" v-if="canAdoption && isSubmit" class="afterAdoption" disabled>
+          已送出
+        </button>
+        <button type="button" v-if="!canAdoption" class="afterAdoption" disabled>
+          已被領養
         </button>
       </div>
     </div>
@@ -161,6 +167,10 @@ export default {
 </template>
 
 <style scoped lang="scss">
+body button {
+  cursor: unset;
+}
+
 .animal_adoption {
   display: flex;
   justify-content: center;
@@ -225,7 +235,7 @@ export default {
     justify-content: space-around;
     margin-top: 10px;
 
-    .adoption {
+    .beforeAdoption {
       width: 150px;
       height: 60px;
       font-size: 28px;
@@ -256,7 +266,7 @@ export default {
   height: inherit;
 }
 
-.beforeAdoption {
+.afterAdoption {
   width: 150px;
   height: 60px;
   font-size: 28px;
@@ -268,7 +278,7 @@ export default {
   border-radius: 2rem;
   box-shadow: 2px 2px 5px grey;
   margin: 0 15px;
-  // transition: ease 0.1s;
+  color: white;
   background-color: #818181;
   cursor: not-allowed;
 }
