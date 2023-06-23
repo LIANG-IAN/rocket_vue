@@ -13,6 +13,9 @@ export default {
                 "../../public/img/carouselImg/pet_nailcut_1.png"
             ],
             currentIndex: 0,
+
+            //環境變數API
+            findAllProductUrl: import.meta.env.VITE_FIND_ALL_PRODUCT,
         }
     },
     computed: {
@@ -22,7 +25,7 @@ export default {
         },
         // 只顯示最新的前 11 個商品
         displayedProducts() {
-            return this.products.slice().reverse().slice(0, 11);
+            return this.products.slice().reverse().slice(0, 10);
         },
     },
     mounted() {
@@ -41,7 +44,7 @@ export default {
             this.currentIndex = (this.currentIndex + 1) % this.images.length;
         },
         getProducts() {
-            axios.get('http://localhost:8080/find_all_product')
+            axios.get(this.findAllProductUrl)
                 .then(response => {
                     // console.log(response.data.productList);
                     this.products = response.data.productList;
@@ -74,10 +77,13 @@ export default {
             <h1>最新商品</h1>
         </div>
         <div class="products_list" v-if="products.length > 0">
+
+            <RouterLink to="/shop_all" class="link">
+                <div class="product_card_last">查看全部商品</div>
+            </RouterLink>
             <div class="product_card" v-for=" product in reverseProducts" :key="product.product_id">
                 <RouterLink :to="'shop_details/' + product.productId">
-                    <img class=" product_img" :src="`../../public/img/productWall_img/pruductWall_${product.productId}.jpg`"
-                        alt="">
+                    <img class=" product_img" :src="`../../public/img/productWall_img/${product.productId}-1.png`" alt="">
                     <p class="product_Name">{{ product.productName }}</p>
                     <p class="product_price"> $ {{ product.price }}</p>
                     <!-- <button class="add_cart" type="button" :data-productid="product.productId">🛒</button> -->
@@ -86,7 +92,6 @@ export default {
             <RouterLink to="/shop_all" class="link">
                 <div class="product_card_last">查看全部商品</div>
             </RouterLink>
-
         </div>
     </div>
 </template>
@@ -182,13 +187,13 @@ a {
             position: relative;
 
             .product_img {
-                width: 200px;
-                height: 200px;
+                width: 180px;
+                height: 180px;
                 background-color: #979797;
             }
 
             .product_Name {
-                font-size: 24px;
+                font-size: 18px;
                 margin: 10px;
             }
 

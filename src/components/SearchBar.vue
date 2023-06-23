@@ -82,7 +82,7 @@ export default {
 
     #search_btn {
         height: 48px;
-        width: 100px;
+        width: 150px;
         margin: 10px;
         border-radius: 10px;
         font-size: 18px;

@@ -8,6 +8,10 @@ export default {
             category: null,
             price: 0,
             stock: 0,
+
+            //環境變數API
+            findOneProductUrl: import.meta.env.VITE_FIND_ONE_PRODUCT,
+
         }
     },
     mounted() {
@@ -21,7 +25,7 @@ export default {
     methods: {
         findProducts() {
             // console.log(this.productId)
-            axios.post('http://localhost:8080/find_one', this.productId, {
+            axios.post(this.findOneProductUrl, this.productId, {
                 headers: {
                     'Content-Type': 'application/json'
                 }
@@ -45,7 +49,11 @@ export default {
 </script>
 <template>
     <div id="show_detail_area">
-        <img id="product_img" :src="`../../public/img/productWall_img/pruductWall_${productId}.jpg`" alt="">
+        <button class="back" @click="$router.go(-1)">
+            <font-awesome-icon :icon="['fas', 'square-caret-left']" size="lg" style="color: #935743;" />
+            <span> 回上一頁 </span>
+        </button>
+        <img id="product_img" :src="`../../public/img/productWall_img/${productId}-1.png`" alt="">
         <div id="details">
             <h1 id="product_name">{{ productName }}</h1>
             <hr class="hrr">
@@ -61,6 +69,11 @@ export default {
     </div>
 </template>
 <style lang="scss" scoped>
+hr {
+    border-top: 2px dashed #cfb7a3;
+}
+
+
 #show_detail_area {
     width: 80%;
     margin: 50px auto;
@@ -71,25 +84,29 @@ export default {
     border-radius: 20px;
     background-color: #fff;
     box-shadow: 0px 5px 5px #f2e9c6;
+    position: relative;
+
+    .back {
+        background-color: transparent;
+        font-size: 24px;
+        margin: 30px;
+        position: absolute;
+        top: -70px;
+        left: 0;
+        border: none;
+    }
 
     #product_img {
         margin: 20px;
-        height: 50%;
-        width: 50%;
+        height: 40%;
+        width: 40%;
         // border: 2px solid #cfb7a3;
         // border-radius: 20px;
     }
 
     #details {
         margin: 20px;
-
-        .hrr {
-            border: none;
-            /* 移除預設的邊框 */
-            height: 2px;
-            /* 設置分隔線的高度 */
-            background-color: #cfb7a3;
-        }
+        width: 40%;
 
         #product_name {
             font-size: 30px;
@@ -136,7 +153,19 @@ export default {
 @media (max-width: 600px) {
     #show_detail_area {
         display: block;
-        /* 或者其他適當的 display 屬性值 */
+
+        #product_img {
+            margin: 20px;
+            height: 60%;
+            width: 80%;
+            // border: 2px solid #cfb7a3;
+            // border-radius: 20px;
+        }
+
+        #details {
+            margin: 20px;
+            width: 80%;
+        }
     }
 }
 </style>
