@@ -1,6 +1,3 @@
-//環境變數用
-const apiUrl = import.meta.env.VITE_APP_API_URL;
-
 import './stylesheet/main.scss'
 
 import { createApp } from 'vue'
