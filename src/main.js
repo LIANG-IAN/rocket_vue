@@ -23,9 +23,6 @@ import 'sweetalert2/dist/sweetalert2.min.css';
 const app = createApp(App)
 const pinia = createPinia()
 
-// 設定環境變數
-app.config.globalProperties.$apiUrl = apiUrl;
-
 app.component('font-awesome-icon', FontAwesomeIcon);
 
 app.use(createPinia())
