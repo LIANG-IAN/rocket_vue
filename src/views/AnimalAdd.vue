@@ -76,9 +76,12 @@ export default {
           }
         ]
       };
-      return axios.post("http://localhost:8080/animalAdd", body).then(async () => {
+      return axios.post("http://localhost:8080/animalAdd", body).then(async (res) => {
         await this.sendPhoto(this.base64Body);
-        alert("更新成功")
+        alert(res.data.message);
+        if (res.data.message==="新增資訊成功"){
+          this.$router.push("/animalAllFiles");
+        }
       })
     },
 
@@ -123,8 +126,13 @@ export default {
 
     // 送出照片資料至後端
     sendPhoto(photos) {
+      let delay = 0; // 初始延迟时间
       for (const e of photos) {
-        axios.post("http://localhost:8080/upLordImg", e).then(() => console.log("照片送出成功"))
+        setTimeout(() => {
+          axios.post("http://localhost:8080/upLordImg", e)
+              .then(() => console.log("照片送出成功"));
+        }, delay);
+        delay += 3; // 增加延迟时间
       }
     }
   },

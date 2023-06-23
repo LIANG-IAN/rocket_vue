@@ -128,7 +128,7 @@ export default {
       };
       return axios.post("http://localhost:8080/deleteById", body).then(() => {
         alert("刪除成功")
-        this.goBack();
+        this.$router.push("/animalAllFiles");
       })
 
     },
