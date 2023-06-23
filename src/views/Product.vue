@@ -6,7 +6,7 @@ export default {
     data() {
         return {
 
-            // 下拉式選單
+            // 搜尋用下拉式選單
             dropdownOptions: [
                 { label: '狗🐶', value: '狗' },
                 { label: '貓🐱', value: '貓' },
@@ -22,23 +22,21 @@ export default {
             // 商品顯示
             products: [],
             currentPage: 1,          // 目前所在的頁碼
-            itemsPerPage: 10,         // 每頁顯示的商品數量
+            itemsPerPage: 10,        // 每頁顯示的商品數量
             totalPages: 0,           // 總頁數
-            displayedProducts: [],   // 顯示的商品列表
             currentSlide: 1,         // 當前的分頁索引
 
             //搜尋關鍵字
             strName: "",
             strCate1: "全部",
             strCate2: "全部",
-            //搜尋結果
-            searchResults: [],
+            searchResults: [],       //搜尋結果顯示
             count: 0,
-
 
             //環境變數API
             findAllProductUrl: import.meta.env.VITE_FIND_ALL_PRODUCT,
             searchProductUrl: import.meta.env.VITE_SEARCH_PRODUCT,
+            AddProductUrl: import.meta.env.VITE_ADD_PRODUCT,
         }
 
     },
@@ -64,12 +62,18 @@ export default {
             const startIndex = (this.currentSlide - 1) * this.itemsPerPage;
             const endIndex = startIndex + this.itemsPerPage;
             this.searchResults = this.products.slice(startIndex, endIndex);
-            console.dir(this.searchResults);
+            // console.dir(this.searchResults);
             this.count = this.searchResults.length;
+            // 回到上面
+            window.scrollTo({
+                top: 220,
+                behavior: 'smooth'
+            });
         },
         //輪播
         setCurrentSlide(slideIndex) {
             this.currentSlide = slideIndex;
+            this.currentPage = slideIndex; // 搜尋更新當前頁碼
             this.updateDisplayedProducts();
         },
         //搜尋欄
@@ -82,22 +86,10 @@ export default {
             console.log(this.strCate1);
             console.log(this.strCate2);
 
-            axios.get(this.findAllProductUrl)
-                .then(response => {
-                    this.products = response.data.productList.reverse();
-                    this.totalPages = Math.ceil(this.products.length / this.itemsPerPage);
-                })
-                .catch(error => {
-                    console.error(error);
-                    console.log("錯誤!");
-                });
-
-            this.updateDisplayedProducts();
-            //RequestBody
             const requestData = {
-                strName: this.strName,
-                strCate: this.strCate1,
-                strCate2: this.strCate2
+                "strName": this.strName,
+                "strCate": this.strCate1,
+                "strCate2": this.strCate2
             }
 
             axios({
@@ -109,9 +101,11 @@ export default {
                     console.log(res.data.productList);
                     //恭喜我終於抓到資料了嗚嗚嗚
                     try {
-                        this.searchResults = res.data.productList;
                         console.log("查詢中...");
-                        this.count = this.searchResults.length;
+                        this.products = res.data.productList.reverse();
+                        this.totalPages = Math.ceil(this.products.length / this.itemsPerPage);
+                        this.updateDisplayedProducts();
+                        this.currentSlide = 1; // 切換到第一頁
                     } catch {
                         console.log("查詢有誤，或沒有結果!")
                     }
@@ -121,7 +115,7 @@ export default {
                     console.error(error);
                     console.log("錯誤!");
                 });
-        }
+        },
     },
     mounted() {
         // 取得商品數據
@@ -148,28 +142,33 @@ export default {
 
 <template>
     <div class="shop_all_main">
+
         <!-- 搜尋欄 -->
         <div class="search_add">
             <SearchBar :dropdownOptions="dropdownOptions" :dropdownOptions2="dropdownOptions2"
                 @pushResult="searchPushResult" />
+
             <RouterLink :to="'product_add/'" class="add_new_link"> 新增商品
                 <font-awesome-icon :icon="['fas', 'square-plus']" size="xl" style="color: #995a25;" />
             </RouterLink>
         </div>
 
-
-
         <div v-if="searchResults && searchResults.length > 0">
+
             <div class="all_title">
                 <h1>後台管理-商品搜尋結果</h1>
             </div>
             <div class="result_count">
-                <span>已顯示出 <span v-text="count"></span> 筆結果：</span>
+                <span>本頁已顯示出 <span v-text="count"></span> 筆結果：</span>
             </div>
-
+            <div class="pages">
+                <button v-for="index in totalPages" :key="index" @click="setCurrentSlide(index)">
+                    {{ index }}
+                </button>
+            </div>
             <div class="products_list">
                 <div class="product_card" v-for="result in searchResults">
-                    <img class=" product_img" :src="`../../public/img/productWall_img/${result.productId}-1.jpg`">
+                    <img class=" product_img" :src="`../../public/img/productWall_img/${result.productId}-1.png`">
                     <div class="details">
                         <p class="product_Name">品名：{{ result.productName }}</p>
                         <hr>
@@ -187,6 +186,11 @@ export default {
                     </RouterLink>
                 </div>
             </div>
+            <div class="pages">
+                <button v-for="index in totalPages" :key="index" @click="setCurrentSlide(index)">
+                    {{ index }}
+                </button>
+            </div>
         </div>
 
         <div class="products_list" v-else>
@@ -196,11 +200,6 @@ export default {
             <span class="no_result">查無結果</span>
         </div>
 
-        <div class="pages">
-            <button v-for="index in totalPages" :key="index" @click="setCurrentSlide(index)">
-                {{ index }}
-            </button>
-        </div>
     </div>
 </template>
 

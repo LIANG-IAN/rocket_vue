@@ -209,9 +209,9 @@ export default {
     <div id="show_detail_area">
         <button class="back" @click="$router.go(-1)">
             <font-awesome-icon :icon="['fas', 'square-caret-left']" size="lg" style="color: #935743;" />
-            <span> 回商品總覽 </span>
+            <span> 回上一頁 </span>
         </button>
-        <img id="product_img" :src="`../../public/img/productWall_img/${productId}-1.jpg`" alt="">
+        <img id="product_img" :src="`../../public/img/productWall_img/${productId}-1.png`" alt="">
         <div id="details">
             <font-awesome-icon :icon="['fas', 'pen-to-square']" size="lg" style="color: #995a25;"
                 @click="changeProductName" />

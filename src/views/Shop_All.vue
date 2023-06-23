@@ -31,8 +31,7 @@ export default {
             strName: "",
             strCate1: "全部",
             strCate2: "全部",
-            //搜尋結果
-            searchResults: [],       // 顯示的商品列表
+            searchResults: [],       //搜尋結果顯示
             count: 0,
 
             //環境變數
@@ -65,6 +64,11 @@ export default {
             this.searchResults = this.products.slice(startIndex, endIndex);
             // console.log(this.displayedProducts.length);
             this.count = this.searchResults.length;
+            // 回到上面
+            window.scrollTo({
+                top: 220,
+                behavior: 'smooth'
+            });
         },
         //輪播
         setCurrentSlide(slideIndex) {
@@ -82,9 +86,9 @@ export default {
             console.log(this.strCate2);
 
             const requestData = {
-                strName: this.strName,
-                strCate: this.strCate1,
-                strCate2: this.strCate2
+                "strName": this.strName,
+                "strCate": this.strCate1,
+                "strCate2": this.strCate2
             }
 
             axios({
@@ -96,9 +100,11 @@ export default {
                     console.log(res.data.productList);
                     //恭喜我終於抓到資料了嗚嗚嗚
                     try {
-                        this.searchResults = res.data.productList;
                         console.log("查詢中...");
-                        this.count = this.searchResults.length;
+                        this.products = res.data.productList.reverse();
+                        this.totalPages = Math.ceil(this.products.length / this.itemsPerPage);
+                        this.updateDisplayedProducts();
+                        this.currentSlide = 1; // 切換到第一頁
                     } catch {
                         console.log("查詢有誤，或沒有結果!")
                     }
@@ -140,17 +146,24 @@ export default {
 
         <Checkout />
 
-        <div class="all_title">
-            <h1>商品列表</h1>
-        </div>
+
         <div v-if="searchResults && searchResults.length > 0">
+
+            <div class="all_title">
+                <h1>商品</h1>
+            </div>
             <div class="result_count">
-                <span>已顯示出 <span v-text="count"></span> 筆結果：</span>
+                <span>本頁已顯示出 <span v-text="count"></span> 筆結果：</span>
+            </div>
+            <div class="pages">
+                <button v-for="index in totalPages" :key="index" @click="setCurrentSlide(index)">
+                    {{ index }}
+                </button>
             </div>
             <div class="products_list">
                 <div class="product_card" v-for="result in searchResults">
                     <RouterLink :to="'shop_details/' + result.productId">
-                        <img class=" product_img" :src="`../../public/img/productWall_img/${result.productId}-1.jpg`"
+                        <img class=" product_img" :src="`../../public/img/productWall_img/${result.productId}-1.png`"
                             alt="">
                         <p class="product_Name">{{ result.productName }}</p>
                         <p class="product_price">$ {{ result.price }}</p>
