@@ -8,6 +8,7 @@ export default {
       //TODO
       member_id: sessionStorage.getItem("member_id"),
       page:1,
+      pageTotal:1,
     }
   },
   methods: {
@@ -16,6 +17,11 @@ export default {
       return axios.get("http://localhost:8080/findAll")
         .then(res => {
           this.allAnimalResponse = res.data.animalList;
+          
+          // 計算頁數
+          const dataTotal = this.allAnimalResponse.length;
+          const perPage = 10;
+          this.pageTotal = Math.ceil(dataTotal / perPage);
         });
     },
 
@@ -72,6 +78,7 @@ export default {
 
     // 判斷點擊全部、貓、狗
     judgeClickAnimalSort(element) {
+      this.page =1;
       const target = element.target;
       if (target.classList.contains('filesBtnAll')) {
         this.getAllAnimalData();
@@ -113,6 +120,11 @@ export default {
   watch: {
     allAnimalResponse() {
       this.renderFavoriteAnimals();
+      
+      // 計算頁數
+      const dataTotal = this.allAnimalResponse.length;
+      const perPage = 10;
+      this.pageTotal = Math.ceil(dataTotal / perPage);
     }
   }
 }
@@ -130,9 +142,7 @@ export default {
       </div>
       <!-- 頁數小按鈕 -->
       <div class="filesTitleMinBtn" @click="paging">
-        <button type="button" class="MinPage">1</button>
-        <button type="button" class="MinPage">2</button>
-        <button type="button" class="MinPage">3</button>
+        <button type="button" class="MinPage" v-for="i in pageTotal">{{i}}</button>
       </div>
     </div>
 
@@ -149,10 +159,8 @@ export default {
     </div>
 
     <!-- 頁數小按鈕 -->
-    <div class="filesTitleMinBtn">
-      <button type="button" class="MinPage">1</button>
-      <button type="button" class="MinPage">2</button>
-      <button type="button" class="MinPage">3</button>
+    <div class="filesTitleMinBtn" @click="paging">
+      <button type="button" class="MinPage" v-for="i in pageTotal">{{i}}</button>
     </div>
   </div>
 </template>
