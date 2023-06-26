@@ -1,4 +1,6 @@
 <script>
+import {RouterLink} from 'vue-router';
+
 export default {
     data() {
         return {
@@ -432,18 +434,18 @@ export default {
                         <p>會員資訊</p>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="#">
-                        <font-awesome-icon icon="fa-solid fa-cart-shopping" style="color: #995a25;" />
-                        <p>購物車</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#">
-                        <font-awesome-icon icon="fa-solid fa-file-lines" style="color: #995a25;" />
-                        <p>訂單歷史</p>
-                    </a>
-                </li>
+              <li class="nav-item">
+                <router-link to="/cart">
+                  <font-awesome-icon icon="fa-solid fa-cart-shopping" style="color: #995a25;" />
+                  <p>購物車</p>
+                </router-link>
+              </li>
+              <li class="nav-item">
+                <router-link to="/getorder">
+                  <font-awesome-icon icon="fa-solid fa-file-lines" style="color: #995a25;" />
+                  <p>訂單歷史</p>
+                </router-link>
+              </li>
                 <li class="nav-item">
                     <a href="#">
                         <font-awesome-icon icon="fa-solid fa-heart" style="color: #995a25;" />

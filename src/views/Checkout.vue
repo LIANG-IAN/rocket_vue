@@ -61,28 +61,25 @@ export default {
     },
 };
 </script>
-
+  
 <template>
-    <div>
+    <div id="show_detail_area">
         <div v-for="item in cartList" :key="item.productId"
             class="product_bg flex justify-center items-center h-48 w-auto bg-pri-green rounded-xl m-5">
             <input type="checkbox" v-model="selectedProducts" :value="item.productId" :id="'product' + item.productId"
                 name="products">
             <div class="w-1/4">
-                <img src="../../img/logo.jpg" id="product_img" style="width: 50px;">
+                <img :src="`@/assets/img/productWall_img/${item.productId}-1.png`" id="product_img" style="width: 50px;">
+
             </div>
             <div class="w-1/2">
                 <div class="d">
-                    <p class="bg-white rounded-md p-1 mx-1 mb-2">名稱：
-                        <span id="product_show_name">{{ item.productName }}</span>
-                    </p>
+                    <p class="bg-white rounded-md p-1 mx-1 mb-2">名稱：<span id="product_show_name">{{ item.productName
+                    }}</span></p>
                 </div>
                 <div class="d flex" name="sales" id="w">
-                    <p class="bg-white rounded-md p-1 m-1 w-1/2" id="q">
-                        我要買：
-                        <span id="sale{{ item.productId }}">{{ shoppingCartMap[item.productId] }}</span>
-                        個
-                    </p>
+                    <p class="bg-white rounded-md p-1 m-1 w-1/2" id="q">我要買：<span id="sale{{ item.productId }}">{{
+                        shoppingCartMap[item.productId] }}</span>個</p>
                 </div>
             </div>
         </div>
@@ -90,4 +87,39 @@ export default {
     </div>
 </template>
 
-<style></style>
+<style lang="scss" scoped>
+
+#show_detail_area {
+    width: 80%;
+    margin: 50px auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid #cfb7a3;
+    border-radius: 20px;
+    background-color: #fff;
+    box-shadow: 0px 5px 5px #f2e9c6;
+    position: relative;
+
+    .product_bg {
+        background-color: white;
+    }
+
+    .order_button {
+        height: 48px;
+        width: 150px;
+        margin: 10px;
+        border-radius: 10px;
+        font-size: 18px;
+        border: none;
+        background-color: #995a25;
+        color: white;
+    }
+
+    .order_button:hover {
+        scale: 1.01;
+        background-color: #b86c2e;
+    }
+}
+</style>
+  
