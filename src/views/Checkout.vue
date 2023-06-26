@@ -69,7 +69,7 @@ export default {
             <input type="checkbox" v-model="selectedProducts" :value="item.productId" :id="'product' + item.productId"
                 name="products">
             <div class="w-1/4">
-                <img :src="`@/assets/img/productWall_img/${item.productId}-1.png`" id="product_img" style="width: 50px;">
+              <img :src="`../../../public/img/productWall_img/${item.productId}-1.png`" id="product_img" style="width: 200px;">
 
             </div>
             <div class="w-1/2">

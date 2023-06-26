@@ -25,7 +25,7 @@ export default {
         },
         // 只顯示最新的前 11 個商品
         displayedProducts() {
-            return this.products.slice().reverse().slice(0, 10);
+            return this.products.slice(0, 10);
         },
     },
     mounted() {
@@ -183,7 +183,7 @@ a {
             margin: 20px;
             border: 2px solid #cfb7a3;
             border-radius: 20px;
-            box-shadow: 0px 5px 5px #f2e9c6;
+            box-shadow: 0 5px 5px #f2e9c6;
             position: relative;
 
             .product_img {

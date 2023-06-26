@@ -40,7 +40,7 @@
         const memberId = sessionStorage.getItem("member_id");
         const requestData = {
           member: {
-            memberId: memberId
+            "memberId": memberId
           }
         };
         axios.post('http://localhost:8080/getOrderProduct', requestData)

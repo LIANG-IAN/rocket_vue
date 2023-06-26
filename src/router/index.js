@@ -77,8 +77,13 @@ const router = createRouter({
       // 購物車 =====================================================
       path: "/cart",
       name: "cart",
-      component: () => import("../views/Cart.vue")
+      component: () => import("../views/Checkout.vue")
     },
+      {
+          path: "/getorder",
+          name: "getorder",
+          component: () => import("../views/GetOrder.vue")
+      },
     {
       // 登入註冊
       path: "/loginSignup",
